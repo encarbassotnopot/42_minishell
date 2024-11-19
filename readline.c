@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
 
 void	print_operator(t_operator_type e)
 {
@@ -26,6 +33,21 @@ void	print_operator(t_operator_type e)
 		printf("type: DGREAT >>\n");
 	if (e == PIPE)
 		printf("type: PIPE |\n");
+
+}
+
+void	print_operator_line(t_operator_type e)
+{
+	if (e == LESS)
+		printf("<");
+	if (e == GREAT)
+		printf(">");
+	if (e == DLESS)
+		printf("<<");
+	if (e == DGREAT)
+		printf(">>");
+	if (e == PIPE)
+		printf("|");
 
 }
 
@@ -55,6 +77,30 @@ void	tok_debug(t_token *t)
 	}
 }
 
+void	tok_debug_line(t_token *t)
+{
+	printf("line: ");
+	while (t)
+	{
+		if (t->type == OPERATOR)
+		{
+			printf(RED);
+			print_operator_line(t->oper);
+		}
+		if (t->type == QUOTE)
+			printf(GREEN);
+		if (t->type == DQUOTE)
+			printf(BLUE);
+		if (t->type && t->char_buf)
+			printf("%s", t->char_buf);
+		printf(RESET);
+		if (t->terminated)
+			printf(" ");
+		t = t->next;
+	}
+	printf("\n\n");
+}
+
 int	main(void)
 {
 	char	*line;
@@ -62,11 +108,12 @@ int	main(void)
 
 	while (1)
 	{
-		line = readline("minishel_test1: ");
+		line = readline("minishell_test: ");
 		if (*line)
 		{
 			add_history(line);
 			tokens = tokenization(line);
+			tok_debug_line(tokens);
 			tok_debug(tokens);
 		}
 		free(line);
