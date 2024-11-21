@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/19 15:24:59 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/11/21 08:57:52 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_token	*tokenization(char *line)
 			expand_or_create_operator(*line, &cur_tok);
 		else if (ft_strchr("\'\"", *line))
 			init_quote(*line, &cur_tok, len);
-		else if (ft_isspace(*line))
+		else if (ft_isspace(*line) && cur_tok->type)
 			cur_tok->terminated = true;
 		else
 			append_w_buf(*line, &cur_tok, len);
