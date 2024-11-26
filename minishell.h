@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/19 15:12:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:57:16 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef enum e_operator_type
 /**
  *
  */
+typedef enum e_lex_type
+{
+	UNSET,
+	PRINCIPAL_WORD,
+	PIP,
+	REDIRECTION,
+}		t_lex_type;
+
 typedef struct s_token
 {
 	char			*char_buf;
@@ -52,5 +60,18 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_lex
+{
+	t_lex_type		type;
+	char			*comand;
+	int				comand_num;
+	char			**arguments;
+	t_operator_type	redir_type;
+	struct s_lex	*next;
+}					t_lex;
+
 t_token *tokenization(char *line);
+t_lex	*redefine_token_lex(t_token *token);
+void	lex_debug(t_lex *lex);
+
 #endif

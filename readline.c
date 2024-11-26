@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/19 15:14:26 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/11/26 08:57:49 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	main(void)
 {
 	char	*line;
 	t_token	*tokens;
+	t_lex	*lex;
 
 	while (1)
 	{
@@ -115,6 +116,8 @@ int	main(void)
 			tokens = tokenization(line);
 			tok_debug_line(tokens);
 			tok_debug(tokens);
+			lex = redefine_token_lex(tokens);
+			lex_debug(lex);
 		}
 		free(line);
 	}
