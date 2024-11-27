@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 08:48:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/26 12:43:37 by smercado         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:26:13 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	lex_debug(t_lex *lex)
 		print_type(lex->type);
 		printf("comando numero: %d\n", lex->comand_num); 
 		printf("comand: %s\n", lex->comand);
+		print_operator(lex->redir_type);
 		if (lex->arguments)
 		{
 			while (lex->arguments[j])

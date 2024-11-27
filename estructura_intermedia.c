@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/27 10:10:10 by smercado         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:25:13 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,10 @@ static void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, i
 	if ((*cur_lex) && (*cur_lex)->type != UNSET)
 		*cur_lex = make_new_lex(*cur_lex, comand_num);
 	if (token->oper != PIPE)
+	{
 		(*cur_lex)->type = REDIRECTION;
+		(*cur_lex)->redir_type = token->oper;
+	}
 	else
 	{
 		(*cur_lex)->type = PIP;
