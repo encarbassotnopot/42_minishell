@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/26 10:57:16 by smercado         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:40:35 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ typedef struct s_lex
 t_token *tokenization(char *line);
 t_lex	*redefine_token_lex(t_token *token);
 void	lex_debug(t_lex *lex);
+void	print_operator(t_operator_type e);
 
 #endif

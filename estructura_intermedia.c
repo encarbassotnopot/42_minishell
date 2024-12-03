@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/27 10:25:13 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:21:12 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ static void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, 
 	}
 	if (!token->terminated)
 		*flag = 1;
+	else
+		*flag = 0;
 }
 
 static void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *comand_num)
@@ -141,6 +143,7 @@ static void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, i
 	{
 		(*cur_lex)->type = REDIRECTION;
 		(*cur_lex)->redir_type = token->oper;
+		*flag = 0;
 	}
 	else
 	{
