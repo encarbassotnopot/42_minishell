@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/19 15:12:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:05:34 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ typedef struct s_token
 }					t_token;
 
 t_token *tokenization(char *line);
+void	expand_tokens(t_token *const token);
 #endif

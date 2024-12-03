@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/25 11:48:29 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:05:08 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	main(void)
 			tokens = tokenization(line);
 			tok_debug_line(tokens);
 			tok_debug(tokens);
+			expand_tokens(tokens);
 		}
 		free(line);
 	}
