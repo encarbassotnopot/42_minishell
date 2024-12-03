@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/03 13:36:52 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:06:56 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	append_q_buf(char **c, t_token **cur_tok, int *quote_finished)
 	{
 		if ((*cur_tok)->type == QUOTE && **c == '\'')
 		{
-			(*c)++;
+		//	(*c)++;
 			*quote_finished = 1;
 			break ;
 		}
 		else if ((*cur_tok)->type == DQUOTE && **c == '"')
 		{
-			(*c)++;
+		//	(*c)++;
 			*quote_finished = 1;
 			break ;
 		}
