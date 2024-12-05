@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/21 08:57:52 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:24:07 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ t_token	*append_token(t_token *token)
 {
 	t_token	*my_token;
 
-	my_token = ft_calloc(1, sizeof(t_token));
 	if (token)
 	{
 		if (token->type == TYPE_UNSET)
-			return token;
-		token->next = my_token;
+			return (token);
 	}
+	my_token = ft_calloc(1, sizeof(t_token));
+	if (token)
+		token->next = my_token;
 	return (my_token);
 }
 
