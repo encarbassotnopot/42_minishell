@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   estructura_intermedia.c                            :+:      :+:    :+:   */
+/*   lex.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/03 13:21:12 by smercado         ###   ########.fr       */
+/*   Created: 2024/12/05 14:42:59 by smercado          #+#    #+#             */
+/*   Updated: 2024/12/05 14:45:08 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
+t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 {
 	t_lex	*my_lex;
 
@@ -24,7 +24,7 @@ static t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 	return (my_lex);
 }
 
-static void	append_redirection_word(t_token *token, t_lex **cur_lex, int *flag)
+void	append_redirection_word(t_token *token, t_lex **cur_lex, int *flag)
 {
 	char	*temp;
 
@@ -40,7 +40,7 @@ static void	append_redirection_word(t_token *token, t_lex **cur_lex, int *flag)
 		*flag = 3;
 }
 
-static void	append_first_word(t_token *token, t_lex **cur_lex, int *flag, int *comand_num)
+void	append_first_word(t_token *token, t_lex **cur_lex, int *flag, int *comand_num)
 {
 	char	*temp;
 
@@ -61,7 +61,7 @@ static void	append_first_word(t_token *token, t_lex **cur_lex, int *flag, int *c
 		*flag = 2;
 }
 
-static void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag)
+void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag)
 {
 	t_lex	*tmp;
 	t_token	*token_temp;
@@ -106,7 +106,7 @@ static void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, 
 		*flag = 0;
 }
 
-static void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *comand_num)
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *comand_num)
 {
 	t_lex	*tmp_list;
 
@@ -135,7 +135,7 @@ static void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int 
 		append_arguments(token, cur_lex, list_lex, flag);
 }
 
-static void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, int *flag)
+void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, int *flag)
 {
 	if ((*cur_lex) && (*cur_lex)->type != UNSET)
 		*cur_lex = make_new_lex(*cur_lex, comand_num);
