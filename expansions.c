@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/05 11:46:00 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:14:59 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,41 +57,50 @@ unsigned int	var_count(char *str)
 	return (count);
 }
 
-void	expand_tokens(t_token *const token)
+void	recreate_charbuf(t_token *const tok)
 {
-	t_token			*tok;
 	char			*var;
-	char			*str;
 	char			**fragments;
 	unsigned int	i;
+
+	fragments = ft_calloc(2 + var_count(tok->char_buf) * 2, sizeof(char *));
+	i = -1;
+	fragments[++i] = tok->char_buf;
+	while (ft_strchr(tok->char_buf, '$'))
+	{
+		tok->char_buf = ft_strchr(tok->char_buf, '$');
+		var = get_next_var(tok->char_buf + 1);
+		if (var)
+		{
+			*tok->char_buf = '\0';
+			tok->char_buf += 1 + get_var_len(tok->char_buf + 1);
+			fragments[++i] = getenv(var);
+			fragments[++i] = tok->char_buf;
+			free(var);
+		}
+		else
+			tok->char_buf++;
+	}
+	tok->char_buf = ft_concatenate(fragments);
+	free(fragments);
+}
+
+void	expand_tokens(t_token *const token)
+{
+	t_token	*tok;
+	char	*old_buf;
 
 	tok = token;
 	while (tok)
 	{
-		str = tok->char_buf;
-		fragments = ft_calloc(2 + var_count(str) * 2, sizeof(char *));
+		printf("old chbuf: %s\n", tok->char_buf);
 		if (tok->type == WORD || tok->type == DQUOTE)
 		{
-			i = -1;
-			fragments[++i] = str;
-			while (ft_strchr(str, '$'))
-			{
-				str = ft_strchr(str, '$');
-				var = get_next_var(str + 1);
-				if (var)
-				{
-					*str = '\0';
-					str += 1 + get_var_len(str + 1);
-					fragments[++i] = getenv(var);
-					if (!fragments[i])
-						i--;
-					fragments[++i] = str;
-					free(var);
-				}
-				str++;
-			}
-			printf("%s\n", ft_concatenate(fragments));
+			old_buf = tok->char_buf;
+			recreate_charbuf(tok);
+			free(old_buf);
 		}
+		printf("new chbuf: %s\n", tok->char_buf);
 		tok = tok->next;
 	}
 }
