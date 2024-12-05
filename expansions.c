@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/05 13:14:59 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:31:35 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,12 @@ void	expand_tokens(t_token *const token)
 	tok = token;
 	while (tok)
 	{
-		printf("old chbuf: %s\n", tok->char_buf);
 		if (tok->type == WORD || tok->type == DQUOTE)
 		{
 			old_buf = tok->char_buf;
 			recreate_charbuf(tok);
 			free(old_buf);
 		}
-		printf("new chbuf: %s\n", tok->char_buf);
 		tok = tok->next;
 	}
 }
