@@ -6,18 +6,18 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/11/25 11:48:29 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:51:48 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define BLUE "\x1b[34m"
 #define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
+#define CYAN "\x1b[36m"
+#define RESET "\x1b[0m"
 
 void	print_operator(t_operator_type e)
 {
@@ -33,7 +33,6 @@ void	print_operator(t_operator_type e)
 		printf("type: DGREAT >>\n");
 	if (e == PIPE)
 		printf("type: PIPE |\n");
-
 }
 
 void	print_operator_line(t_operator_type e)
@@ -48,7 +47,6 @@ void	print_operator_line(t_operator_type e)
 		printf(">>");
 	if (e == PIPE)
 		printf("|");
-
 }
 
 void	print_type(t_token_type e)
@@ -105,18 +103,35 @@ int	main(void)
 {
 	char	*line;
 	t_token	*tokens;
+	t_token	*old_t;
 
 	while (1)
 	{
 		line = readline("minishell_test: ");
-		if (*line)
+		if (line)
 		{
 			add_history(line);
 			tokens = tokenization(line);
+			free(line);
 			tok_debug_line(tokens);
 			tok_debug(tokens);
+			expand_tokens(tokens);
+			old_t = tokens;
+			tokens = tokens->next;
+			while (tokens)
+			{
+				free(old_t->char_buf);
+				free(old_t);
+				old_t = tokens;
+				tokens = tokens->next;
+			}
+			free(old_t->char_buf);
+			free(old_t->next);
+			free(old_t);
 		}
-		free(line);
+		else
+			break ;
 	}
+	rl_clear_history();
 	exit(0);
 }
