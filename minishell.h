@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/05 15:11:44 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:43:06 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,15 @@ typedef struct s_lex
 	struct s_lex	*next;
 }					t_lex;
 
+typedef struct s_comand
+{
+	char				*word;
+	char				**arguments;
+	t_operator_type		**redir;
+	char				**file;
+	struct	s_comand	*next;
+}				t_comand;
+
 t_token *tokenization(char *line);
 void	expand_tokens(t_token *const token);
 void	print_operator(t_operator_type e);
@@ -89,5 +98,9 @@ void	append_first_word(t_token *tok, t_lex **cur_lex, int *flag, int *cnum);
 void	append_started_argument(t_lex *tmp, t_token *tok);
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex);
 void	append_new_argument(t_token *tok, t_lex *tmp);
+
+//comandes
+t_comand	*redefine_lex(t_lex *list_lex);
+void		comand_debug(t_comand *comand);
 
 #endif
