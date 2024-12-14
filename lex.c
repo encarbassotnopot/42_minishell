@@ -17,8 +17,8 @@ t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 	t_lex	*my_lex;
 
 	my_lex = ft_calloc(1, sizeof(t_lex));
-	my_lex->comand = NULL;
-	my_lex->comand_num = *cmd_num;
+	my_lex->command = NULL;
+	my_lex->command_num = *cmd_num;
 	if (lex)
 		lex->next = my_lex;
 	return (my_lex);
@@ -28,34 +28,34 @@ void	append_redirection_word(t_token *token, t_lex **cur_lex, int *flag)
 {
 	char	*temp;
 
-	if ((*cur_lex)->comand == NULL)
-		(*cur_lex)->comand = ft_strdup(token->char_buf);
+	if ((*cur_lex)->command == NULL)
+		(*cur_lex)->command = ft_strdup(token->char_buf);
 	else
 	{
-		temp = ft_strjoin((*cur_lex)->comand, token->char_buf);
-		free((*cur_lex)->comand);
-		(*cur_lex)->comand = temp;
+		temp = ft_strjoin((*cur_lex)->command, token->char_buf);
+		free((*cur_lex)->command);
+		(*cur_lex)->command = temp;
 	}
 	if (!token->terminated)
 		*flag = 3;
 }
 
-void	append_first_word(t_token *token, t_lex **cur_lex, int *flag, int *comand_num)
+void	append_first_word(t_token *token, t_lex **cur_lex, int *flag, int *command_num)
 {
 	char	*temp;
 
 	if ((cur_lex) && (*cur_lex)->type == REDIRECTION)
-		*cur_lex = make_new_lex(*cur_lex, comand_num);
-	if ((*cur_lex)->comand == NULL)
+		*cur_lex = make_new_lex(*cur_lex, command_num);
+	if ((*cur_lex)->command == NULL)
 	{
 		(*cur_lex)->type = PRINCIPAL_WORD;
-		(*cur_lex)->comand = ft_strdup(token->char_buf);
+		(*cur_lex)->command = ft_strdup(token->char_buf);
 	}
 	else if (*flag == 2)
 	{
-		temp = ft_strjoin((*cur_lex)->comand, token->char_buf);
-		free((*cur_lex)->comand);
-		(*cur_lex)->comand = temp;
+		temp = ft_strjoin((*cur_lex)->command, token->char_buf);
+		free((*cur_lex)->command);
+		(*cur_lex)->command = temp;
 	}
 	if (!(token->terminated || token->next->type == OPERATOR))
 		*flag = 2;
@@ -72,7 +72,7 @@ void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *fl
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->type == PRINCIPAL_WORD && (*cur_lex)->comand_num == tmp->comand_num)
+		if (tmp->type == PRINCIPAL_WORD && (*cur_lex)->command_num == tmp->command_num)
 			break ;
 		tmp = tmp->next;
 	}
@@ -106,39 +106,39 @@ void	append_arguments(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *fl
 		*flag = 0;
 }
 
-void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *comand_num)
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *command_num)
 {
 	t_lex	*tmp_list;
 
 	tmp_list = *list_lex;
-	if ((*cur_lex)->type == REDIRECTION && (*flag == 3 || (*flag == 0 && (*cur_lex)->comand == NULL)))
+	if ((*cur_lex)->type == REDIRECTION && (*flag == 3 || (*flag == 0 && (*cur_lex)->command == NULL)))
 		append_redirection_word(token, cur_lex, flag);
 	else if (((*cur_lex)->type == UNSET || ((*cur_lex)->type == PRINCIPAL_WORD && *flag == 2)))
-		append_first_word(token, cur_lex, flag, comand_num);
-	else if (*flag == 0 && (*cur_lex)->comand && (*cur_lex)->type == REDIRECTION)
+		append_first_word(token, cur_lex, flag, command_num);
+	else if (*flag == 0 && (*cur_lex)->command && (*cur_lex)->type == REDIRECTION)
 	{
 		while (tmp_list)
 		{
-			if (tmp_list->type == PRINCIPAL_WORD && (*cur_lex)->comand_num == tmp_list->comand_num)
+			if (tmp_list->type == PRINCIPAL_WORD && (*cur_lex)->command_num == tmp_list->command_num)
 				break ;
 			tmp_list = tmp_list->next;
 		}
 		if (tmp_list)
 		{
-			if (tmp_list->type == PRINCIPAL_WORD && (*cur_lex)->comand_num == tmp_list->comand_num)
+			if (tmp_list->type == PRINCIPAL_WORD && (*cur_lex)->command_num == tmp_list->command_num)
 				append_arguments(token, cur_lex, list_lex, flag);
 		}
 		else
-			append_first_word(token, cur_lex, flag, comand_num);
+			append_first_word(token, cur_lex, flag, command_num);
 	}
 	else
 		append_arguments(token, cur_lex, list_lex, flag);
 }
 
-void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, int *flag)
+void	manage_operators(t_token *token, t_lex **cur_lex, int *command_num, int *flag)
 {
 	if ((*cur_lex) && (*cur_lex)->type != UNSET)
-		*cur_lex = make_new_lex(*cur_lex, comand_num);
+		*cur_lex = make_new_lex(*cur_lex, command_num);
 	if (token->oper != PIPE)
 	{
 		(*cur_lex)->type = REDIRECTION;
@@ -148,9 +148,9 @@ void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, int *fla
 	else
 	{
 		(*cur_lex)->type = PIP;
-		(*comand_num)++;
+		(*command_num)++;
 		*flag = 0;
-		*cur_lex = make_new_lex(*cur_lex, comand_num);
+		*cur_lex = make_new_lex(*cur_lex, command_num);
 	}
 }
 
@@ -159,18 +159,18 @@ t_lex	*redefine_token_lex(t_token *token)
 	t_lex	*cur_lex;
 	t_lex	*list_lex;
 	int		flag;
-	int		comand_num;
+	int		command_num;
 
-	comand_num = 1;
-	list_lex = make_new_lex(NULL, &comand_num);
+	command_num = 1;
+	list_lex = make_new_lex(NULL, &command_num);
 	cur_lex = list_lex;
 	flag = 0;
 	while (token)
 	{
 		if (token->type == WORD || token->type == DQUOTE || token->type == QUOTE)
-			manage_words(token, &cur_lex, &list_lex, &flag, &comand_num);
+			manage_words(token, &cur_lex, &list_lex, &flag, &command_num);
 		else if (token->type == OPERATOR)
-			manage_operators(token, &cur_lex, &comand_num, &flag);
+			manage_operators(token, &cur_lex, &command_num, &flag);
 		token = token->next;
 	}
 	return (list_lex);

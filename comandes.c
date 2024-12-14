@@ -31,23 +31,23 @@ static int	get_lex_size(t_lex *lex)
 	return (i);
 }
 
-static t_comand	*make_new_comand(t_comand *com)
+static t_command	*make_new_command(t_command *com)
 {
-	t_comand	*my_com;
+	t_command	*my_com;
 
-	my_com = ft_calloc(1, sizeof(t_comand));
+	my_com = ft_calloc(1, sizeof(t_command));
 	my_com->word = NULL;
 	if (com)
 		com->next = my_com;
 	return (my_com);
 }
 
-static void	add_word(t_lex *lex, t_comand **cur_com)
+static void	add_word(t_lex *lex, t_command **cur_com)
 {
 	int	i;
 
 	i = 0;
-	(*cur_com)->word = ft_strdup(lex->comand);
+	(*cur_com)->word = ft_strdup(lex->command);
 	if (lex->arguments)
 	{
 		(*cur_com)->arguments = ft_calloc((get_lex_size(lex) + 1), sizeof(char **));
@@ -59,12 +59,12 @@ static void	add_word(t_lex *lex, t_comand **cur_com)
 	}
 }
 
-static void	add_redirection(t_lex *lex, t_comand **cur_com)
+static void	add_redirection(t_lex *lex, t_command **cur_com)
 {
 	int	i;
 
 	i = 0;
-	if (lex->comand)
+	if (lex->command)
 	{
 		if (!(*cur_com)->file)
 		{
@@ -73,7 +73,7 @@ static void	add_redirection(t_lex *lex, t_comand **cur_com)
 		}
 		while ((*cur_com)->file[i])
 			i++;
-		(*cur_com)->file[i] = ft_strdup(lex->comand);
+		(*cur_com)->file[i] = ft_strdup(lex->command);
 		(*cur_com)->redir[i] = ft_calloc(1, sizeof(t_operator_type));
 		*((*cur_com)->redir[i]) = lex->redir_type;
 	}
@@ -81,13 +81,13 @@ static void	add_redirection(t_lex *lex, t_comand **cur_com)
 		printf("error + frees\n");
 }
 
-t_comand	*redefine_lex(t_lex *list_lex)
+t_command	*redefine_lex(t_lex *list_lex)
 {
-	t_comand	*cur_com;
-	t_comand	*list_com;
+	t_command	*cur_com;
+	t_command	*list_com;
 	t_lex		*tmp_lex;
 
-	list_com = make_new_comand(NULL);
+	list_com = make_new_command(NULL);
 	cur_com = list_com;
 	tmp_lex = list_lex;
 	while (tmp_lex)
@@ -96,7 +96,7 @@ t_comand	*redefine_lex(t_lex *list_lex)
 		{
 			if ((list_lex == tmp_lex) || (!tmp_lex->next))
 				parse_error(&list_com, &list_lex, "parse error near `|'");
-			cur_com = make_new_comand(cur_com);
+			cur_com = make_new_command(cur_com);
 		}
 		else if (tmp_lex->type == PRINCIPAL_WORD)
 			add_word(tmp_lex, &cur_com);
@@ -108,35 +108,35 @@ t_comand	*redefine_lex(t_lex *list_lex)
 	return (list_com);
 }
 
-void	comand_debug(t_comand *comand)
+void	command_debug(t_command *command)
 {
 	int i = 1;
 	int	j;
 
-	while (comand)
+	while (command)
 	{
 		j = 0;
 		printf("\ncomanda %d\n", i);
-		printf("paraula principal: %s\n", comand->word);
-		if (comand->arguments)
+		printf("paraula principal: %s\n", command->word);
+		if (command->arguments)
 		{
-			while (comand->arguments[j])
+			while (command->arguments[j])
 			{
-				printf("argument[%d]: %s\n", j, comand->arguments[j]);
+				printf("argument[%d]: %s\n", j, command->arguments[j]);
 				j++;
 			}
 		}
-		if (comand->file)
+		if (command->file)
 		{
 			j = 0;
-			while (comand->file[j])
+			while (command->file[j])
 			{
-				print_operator(*comand->redir[j]);
-    			printf("file: %s\n", comand->file[j]);
+				print_operator(*command->redir[j]);
+    			printf("file: %s\n", command->file[j]);
 				j++;
 			}
 		}
-		comand = comand->next;
+		command = command->next;
 		i++;
 	}
 }

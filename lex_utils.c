@@ -33,8 +33,8 @@ void	lex_debug(t_lex *lex)
 		j = 0;
 		printf("Nodo %d\n", i);
 		print_type(lex->type);
-		printf("comando numero: %d\n", lex->comand_num); 
-		printf("comand: %s\n", lex->comand);
+		printf("comando numero: %d\n", lex->command_num); 
+		printf("command: %s\n", lex->command);
 		print_operator(lex->redir_type);
 		if (lex->arguments)
 		{

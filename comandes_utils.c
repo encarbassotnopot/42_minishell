@@ -13,10 +13,10 @@
 
 #include "minishell.h"
 
-void	parse_error(t_comand **comand, t_lex **list_lex, char *str)
+void	parse_error(t_command **command, t_lex **list_lex, char *str)
 {
-//	if (comand)
-//		free(comand)
+//	if (command)
+//		free(command)
 	printf("%s\n", str);
 	exit (-1);
 }

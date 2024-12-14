@@ -65,30 +65,30 @@ typedef struct s_token
 typedef struct s_lex
 {
 	t_lex_type		type;
-	char			*comand;
-	int				comand_num;
+	char			*command;
+	int				command_num;
 	char			**arguments;
 	t_operator_type	redir_type;
 	struct s_lex	*next;
 }					t_lex;
 
-typedef struct s_comand
+typedef struct s_command
 {
 	char				*word;
 	char				**arguments;
 	t_operator_type		**redir;
 	char				**file;
-	struct	s_comand	*next;
-}				t_comand;
+	struct	s_command	*next;
+}				t_command;
 
 t_token *tokenization(char *line);
 void	expand_tokens(t_token *const token);
 void	print_operator(t_operator_type e);
 
-//lex operations
+// lex operations
 t_lex	*redefine_token_lex(t_token *token);
-void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num, int *flag);
-void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *comand_num);
+void	manage_operators(t_token *token, t_lex **cur_lex, int *command_num, int *flag);
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *command_num);
 int		is_argument(t_lex **list_lex, t_lex **cur_lex);
 int	is_terminated(t_token *token, t_token *list_tok);
 t_lex	*make_new_lex(t_lex *lex, int *cmd_num);
@@ -99,8 +99,11 @@ void	append_started_argument(t_lex *tmp, t_token *tok);
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex);
 void	append_new_argument(t_token *tok, t_lex *tmp);
 
-//comandes
-t_comand	*redefine_lex(t_lex *list_lex);
-void		comand_debug(t_comand *comand);
+// comandes
+t_command	*redefine_lex(t_lex *list_lex);
+void		command_debug(t_command *command);
+
+// comandes_utils
+void	parse_error(t_command **command, t_lex **list_lex, char *str);
 
 #endif
