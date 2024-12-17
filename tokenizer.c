@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/05 15:12:15 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 t_token	*append_token(t_token *token)
 {

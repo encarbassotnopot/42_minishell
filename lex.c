@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lex.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:12:10 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 11:11:35 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 {

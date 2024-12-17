@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   estructura_intermedia.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 11:12:51 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 {

@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
+/*   Updated: 2024/12/17 13:27:00 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 #define RED "\x1b[31m"
 #define GREEN "\x1b[32m"
 #define YELLOW "\x1b[33m"
@@ -100,12 +102,11 @@ void	tok_debug_line(t_token *t)
 
 int	main(void)
 {
-	char	*line;
-	t_token	*tokens;
-	t_token	*old_t;
-	t_lex	*lex;
+	char		*line;
+	t_token		*tokens;
+	t_token		*old_t;
+	t_lex		*lex;
 	t_command	*command;
-
 
 	while (1)
 	{

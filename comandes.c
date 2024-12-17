@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   comandes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 11:26:19 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 static int	get_lex_size(t_lex *lex)
 {

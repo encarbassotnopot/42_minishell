@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcel>       +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/05 14:31:35 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 /**
  *	Counts the environment variable's name's len.
