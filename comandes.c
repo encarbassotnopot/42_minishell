@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/11 13:20:29 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:26:19 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,9 @@ void	command_debug(t_command *command)
 {
 	int i = 1;
 	int	j;
+	//t_command *temp_c;
 
+	//temp_c = command;
 	while (command)
 	{
 		j = 0;
