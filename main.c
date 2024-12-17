@@ -104,6 +104,8 @@ int	main(void)
 	t_token	*tokens;
 	t_token	*old_t;
 	t_lex	*lex;
+	t_command	*command;
+
 
 	while (1)
 	{
@@ -118,6 +120,8 @@ int	main(void)
 			expand_tokens(tokens);
 			lex = redefine_token_lex(tokens);
 			lex_debug(lex);
+			command = redefine_lex(lex);
+			command_debug(command);
 			old_t = tokens;
 			tokens = tokens->next;
 			while (tokens)

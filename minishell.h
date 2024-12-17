@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/11 11:43:06 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/17 10:25:33 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,16 @@ void	print_operator(t_operator_type e);
 
 // lex operations
 t_lex	*redefine_token_lex(t_token *token);
-void	manage_operators(t_token *token, t_lex **cur_lex, int *command_num, int *flag);
-void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *flag, int *command_num);
+void	manage_operators(t_token *token, t_lex **cur_lex, int *command_num);
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *command_num);
 int		is_argument(t_lex **list_lex, t_lex **cur_lex);
-int	is_terminated(t_token *token, t_token *list_tok);
+int		is_terminated(t_token *token, t_token *list_tok);
 t_lex	*make_new_lex(t_lex *lex, int *cmd_num);
 void	lex_debug(t_lex *lex);
-void	append_redirection_word(t_token *token, t_lex **cur_lex, int *flag);
-void	append_first_word(t_token *tok, t_lex **cur_lex, int *flag, int *cnum);
-void	append_started_argument(t_lex *tmp, t_token *tok);
+void	append_redirection_word(t_token *token, t_lex **cur_lex);
+void	append_first_word(t_token *tok, t_lex **cur_lex, int *cnum);
+void	append_started_argument(t_lex **l_lex, t_lex **cur_lex, t_token *tok);
+void	append_next_argument(t_lex *tmp, t_token *tok);
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex);
 void	append_new_argument(t_token *tok, t_lex *tmp);
 
