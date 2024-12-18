@@ -6,13 +6,14 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:43:13 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:22:58 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:26:34 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	is_argument(t_lex **list_lex, t_lex **cur_lex )
+int	is_argument (t_lex **list_lex, t_lex **cur_lex)
 {
 	t_lex	*tmp_list;
 
@@ -46,7 +47,7 @@ int	is_terminated(t_token *token, t_token *list_tok)
 			break ;
 	tmp_list = tmp_list->next;
 	}
-	if (tmp_list->terminated)
+	if (tmp_list->terminated || (tmp_list->type == OPERATOR && !tmp_list->char_buf))
 		return (1);
 	return (0);
 }

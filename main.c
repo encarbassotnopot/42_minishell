@@ -121,8 +121,6 @@ int	main(void)
 			expand_tokens(tokens);
 			lex = redefine_token_lex(tokens);
 			lex_debug(lex);
-			command = redefine_lex(lex);
-			command_debug(command);
 			old_t = tokens;
 			tokens = tokens->next;
 			while (tokens)
@@ -135,6 +133,9 @@ int	main(void)
 			free(old_t->char_buf);
 			free(old_t->next);
 			free(old_t);
+			command = redefine_lex(lex);
+			command_debug(command);
+		//	free_comandes(command);
 		}
 		else
 			break ;

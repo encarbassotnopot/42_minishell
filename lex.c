@@ -6,7 +6,8 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:12:10 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:23:08 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:46:21 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +25,7 @@ t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 	return (my_lex);
 }
 
-void	append_redirection_word(t_token *token, t_lex **cur_lex)
+void	append_redirection_word(t_token *token, t_lex **cur_lex, t_token **list_token, t_lex **list_lex)
 {
 	char	*temp;
 
@@ -36,13 +37,18 @@ void	append_redirection_word(t_token *token, t_lex **cur_lex)
 		free((*cur_lex)->command);
 		(*cur_lex)->command = temp;
 	}
+	if (is_terminated(token->next, (*list_token)) && !is_argument(list_lex, cur_lex))
+		(*cur_lex)->type = UNSET;
+	else if (is_terminated(token->next, (*list_token)))
+		(*cur_lex)->type = PRINCIPAL_WORD;
 }
 
 void	append_first_word(t_token *tok, t_lex **cur_lex, int *cnum)
 {
 	char	*temp;
 
-	if ((cur_lex) && (*cur_lex)->type == REDIRECTION)
+	if (((cur_lex) && (*cur_lex)->type == REDIRECTION) || ((*cur_lex)->type == UNSET && \
+		(*cur_lex)->command != NULL && (*cur_lex)->redir_type != OP_UNSET))
 		*cur_lex = make_new_lex(*cur_lex, cnum);
 	if ((*cur_lex)->command == NULL)
 	{
@@ -82,7 +88,7 @@ void	append_started_argument(t_lex **l_lex, t_lex **cur_lex, t_token *tok)
 	tmp = *l_lex;
 	while (tmp)
 	{
-		if ((*cur_lex)->command_num == tmp->command_num)
+		if ((*cur_lex)->command_num == tmp->command_num && tmp->redir_type == OP_UNSET)
 			break ;
 		tmp = tmp->next;
 	}

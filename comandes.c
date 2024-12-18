@@ -6,7 +6,8 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:22:20 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:49:40 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +51,8 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 	(*cur_com)->word = ft_strdup(lex->command);
 	if (lex->arguments)
 	{
-		(*cur_com)->arguments = ft_calloc((get_lex_size(lex) + 1), sizeof(char **));
+		(*cur_com)->arguments = ft_calloc((get_lex_size(lex) + 1), \
+			sizeof(char **));
 		while (lex->arguments[i])
 		{
 			(*cur_com)->arguments[i] = ft_strdup(lex->arguments[i]);
@@ -59,7 +61,7 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 	}
 }
 
-static void	add_redirection(t_lex *lex, t_command **cur_com)
+static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, t_command **list_com)
 {
 	int	i;
 
@@ -69,7 +71,7 @@ static void	add_redirection(t_lex *lex, t_command **cur_com)
 		if (!(*cur_com)->file)
 		{
 			(*cur_com)->redir = ft_calloc((get_lex_size(lex) + 1), sizeof(t_operator_type));
-			(*cur_com)->file = ft_calloc((get_lex_size(lex) + 1) , sizeof(char **));
+			(*cur_com)->file = ft_calloc((get_lex_size(lex) + 1), sizeof(char **));
 		}
 		while ((*cur_com)->file[i])
 			i++;
@@ -77,8 +79,14 @@ static void	add_redirection(t_lex *lex, t_command **cur_com)
 		(*cur_com)->redir[i] = ft_calloc(1, sizeof(t_operator_type));
 		*((*cur_com)->redir[i]) = lex->redir_type;
 	}
+	else if ((*list_lex) && (*list_lex)->next)
+	{
+		if ((*list_lex)->next->type == PIP)
+			parse_error(list_com, list_lex, "parse error near `|'");
+		parse_error(list_com, list_lex, "parse error near `n'");
+	}
 	else
-		printf("error + frees\n");
+		parse_error(list_com, list_lex, "parse error near `n'");
 }
 
 t_command	*redefine_lex(t_lex *list_lex)
@@ -98,10 +106,10 @@ t_command	*redefine_lex(t_lex *list_lex)
 				parse_error(&list_com, &list_lex, "parse error near `|'");
 			cur_com = make_new_command(cur_com);
 		}
-		else if (tmp_lex->type == PRINCIPAL_WORD)
-			add_word(tmp_lex, &cur_com);
+		else if (tmp_lex->redir_type != OP_UNSET)
+			add_redirection(tmp_lex, &list_lex, &cur_com, &list_com);
 		else
-			add_redirection(tmp_lex, &cur_com);
+			add_word(tmp_lex, &cur_com);
 		tmp_lex = tmp_lex->next;
 	}
 //	free_lex(list_lex);
