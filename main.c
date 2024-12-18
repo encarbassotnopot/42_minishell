@@ -6,10 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 13:27:00 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:04:26 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution.h"
 #include "minishell.h"
 #include "parsing.h"
 #define RED "\x1b[31m"
@@ -100,13 +101,14 @@ void	tok_debug_line(t_token *t)
 	printf("\n\n");
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
 	t_token		*tokens;
 	t_token		*old_t;
 	t_lex		*lex;
 	t_command	*command;
+	pid_t		ex;
 
 	while (1)
 	{
@@ -116,11 +118,16 @@ int	main(void)
 			add_history(line);
 			tokens = tokenization(line);
 			free(line);
-			tok_debug_line(tokens);
-			tok_debug(tokens);
 			expand_tokens(tokens);
 			lex = redefine_token_lex(tokens);
 			lex_debug(lex);
+			command = redefine_lex(lex);
+			command_debug(command);
+			if (command)
+			{
+				ex = run_commands(command, envp);
+				waitpid(ex, 0, 0);
+			}
 			old_t = tokens;
 			tokens = tokens->next;
 			while (tokens)
@@ -133,9 +140,6 @@ int	main(void)
 			free(old_t->char_buf);
 			free(old_t->next);
 			free(old_t);
-			command = redefine_lex(lex);
-			command_debug(command);
-		//	free_comandes(command);
 		}
 		else
 			break ;
