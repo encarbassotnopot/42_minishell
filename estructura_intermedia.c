@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 10:22:49 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:43:00 by smercado         ###   ########.fr       */
 /*   Updated: 2024/12/18 09:03:41 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -31,20 +31,22 @@ void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 		append_next_argument(tmp, tok);
 }
 
-void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, t_token *token, int *comand_num)
+void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, \
+		t_token *token, int *comand_num)
 {
-	 if ((*cur_lex)->redir_type == OP_UNSET && (!(*cur_lex)->arguments))
+	if ((*cur_lex)->redir_type == OP_UNSET && (!(*cur_lex)->arguments))
 		append_first_word(token, cur_lex, comand_num);
 	else
 		append_started_argument(list_lex, cur_lex, token);
 }
 
-void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, int *comand_num)
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, \
+		int *comand_num)
 {
 	if (is_argument(list_lex, cur_lex))
-				append_args(token, cur_lex, list_lex);
-			else
-				append_first_word(token, cur_lex, comand_num);
+		append_args(token, cur_lex, list_lex);
+	else
+		append_first_word(token, cur_lex, comand_num);
 }
 
 void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
@@ -78,12 +80,13 @@ t_lex	*redefine_token_lex(t_token *token)
 	list_tok = token;
 	while (token)
 	{
-		if ((token->type == WORD || token->type == DQUOTE || \
-			token->type == QUOTE) && cur_lex->type != REDIRECTION)
+		if (is_word(token) && cur_lex->type != REDIRECTION)
+		{
 			if (is_terminated(token, list_tok))
 				manage_words(token, &cur_lex, &list_lex, &comand_num);
 			else
 				manage_started_words(&cur_lex, &list_lex, token, &comand_num);
+		}
 		else if (token->type == OPERATOR)
 			manage_operators(token, &cur_lex, &comand_num);
 		else

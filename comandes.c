@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 10:22:20 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:23:35 by smercado         ###   ########.fr       */
 /*   Updated: 2024/12/18 09:49:40 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -29,7 +29,7 @@ static int	get_lex_size(t_lex *lex)
 			return (i + 1);
 		tmp_lex = tmp_lex->next;
 	}
-	return (i);
+	return (i + 1);
 }
 
 static t_command	*make_new_command(t_command *com)
@@ -37,7 +37,7 @@ static t_command	*make_new_command(t_command *com)
 	t_command	*my_com;
 
 	my_com = ft_calloc(1, sizeof(t_command));
-	my_com->word = NULL;
+	my_com->arguments = NULL;
 	if (com)
 		com->next = my_com;
 	return (my_com);
@@ -48,20 +48,21 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 	int	i;
 
 	i = 0;
-	(*cur_com)->word = ft_strdup(lex->command);
+	(*cur_com)->arguments = ft_calloc((get_lex_size(lex) + 1), sizeof(char *));
+	(*cur_com)->arguments[i] = ft_strdup(lex->command);
 	if (lex->arguments)
 	{
-		(*cur_com)->arguments = ft_calloc((get_lex_size(lex) + 1), \
-			sizeof(char **));
 		while (lex->arguments[i])
 		{
-			(*cur_com)->arguments[i] = ft_strdup(lex->arguments[i]);
+			(*cur_com)->arguments[i + 1] = ft_strdup(lex->arguments[i]);
 			i++;
 		}
+		(*cur_com)->arguments[i + 1] = ft_strdup(NULL);
 	}
 }
 
-static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, t_command **list_com)
+static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, \
+			t_command **list_com)
 {
 	int	i;
 
@@ -70,8 +71,9 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, t
 	{
 		if (!(*cur_com)->file)
 		{
-			(*cur_com)->redir = ft_calloc((get_lex_size(lex) + 1), sizeof(t_operator_type));
-			(*cur_com)->file = ft_calloc((get_lex_size(lex) + 1), sizeof(char **));
+			(*cur_com)->redir = ft_calloc((get_lex_size(lex)), \
+				sizeof(t_operator_type));
+			(*cur_com)->file = ft_calloc((get_lex_size(lex)), sizeof(char **));
 		}
 		while ((*cur_com)->file[i])
 			i++;
@@ -112,41 +114,5 @@ t_command	*redefine_lex(t_lex *list_lex)
 			add_word(tmp_lex, &cur_com);
 		tmp_lex = tmp_lex->next;
 	}
-//	free_lex(list_lex);
 	return (list_com);
-}
-
-void	command_debug(t_command *command)
-{
-	int i = 1;
-	int	j;
-	//t_command *temp_c;
-
-	//temp_c = command;
-	while (command)
-	{
-		j = 0;
-		printf("\ncomanda %d\n", i);
-		printf("paraula principal: %s\n", command->word);
-		if (command->arguments)
-		{
-			while (command->arguments[j])
-			{
-				printf("argument[%d]: %s\n", j, command->arguments[j]);
-				j++;
-			}
-		}
-		if (command->file)
-		{
-			j = 0;
-			while (command->file[j])
-			{
-				print_operator(*command->redir[j]);
-    			printf("file: %s\n", command->file[j]);
-				j++;
-			}
-		}
-		command = command->next;
-		i++;
-	}
 }

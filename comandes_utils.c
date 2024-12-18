@@ -6,11 +6,10 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 10:22:36 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:43:22 by smercado         ###   ########.fr       */
 /*   Updated: 2024/12/18 10:16:17 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "parsing.h"
 
@@ -18,92 +17,90 @@ void	parse_error(t_command **command, t_lex **list_lex, char *str)
 {
 	printf("%s\n", str);
 	if (command && *command)
-        free_command_list(command);
+		free_command_list(command);
 	if (list_lex && *list_lex)
-        free_lex_list(list_lex);
+		free_lex_list(list_lex);
 	exit (-1);
 }
 
-void free_lex_list(t_lex **list_lex)
+void	free_lex_list(t_lex **list_lex)
 {
-    t_lex *temp;
+	t_lex	*temp;
 
-    while (*list_lex)
-    {
-        temp = (*list_lex)->next;
-        free_lex_node(*list_lex); 
+	while (*list_lex)
+	{
+		temp = (*list_lex)->next;
+		free_lex_node(*list_lex);
 		*list_lex = temp;
-    }
-}
-
-void free_command_list(t_command **command)
-{
-    t_command *temp;
-
-    while (*command)
-    {
-        temp = (*command)->next;
-        free_command_node(*command); 
-        *command = temp;
-    }
-}
-
-void free_lex_node(t_lex *node)
-{
-	int	i;
-
-	i = 0;
-    if (node->command)
-        free(node->command); 
-    if (node->arguments)
-    {
-        while (node->arguments[i])
-		{
-            free(node->arguments[i]);
-			i++;
-		}
-			free(node->arguments); 
 	}
-    free(node);
 }
 
-void free_command_node(t_command *node)
+void	free_command_list(t_command **command)
+{
+	t_command	*temp;
+
+	while (*command)
+	{
+		temp = (*command)->next;
+		free_command_node(*command);
+		*command = temp;
+	}
+}
+
+void	free_lex_node(t_lex *node)
 {
 	int	i;
 
 	i = 0;
-    if (node->word)
-        free(node->word); 
-    if (node->arguments)
-    {
+	if (node->command)
+		free(node->command);
+	if (node->arguments)
+	{
 		while (node->arguments[i])
 		{
-            free(node->arguments[i]);
+			free(node->arguments[i]);
 			i++;
 		}
-        free(node->arguments);        
-    }
-    if (node->redir)
-    {
+		free(node->arguments);
+	}
+	free(node);
+}
+
+void	free_command_node(t_command *node)
+{
+	int	i;
+
+	i = 0;
+	if (node->arguments)
+	{
+		while (node->arguments[i])
+		{
+			free(node->arguments[i]);
+			i++;
+		}
+		free(node->arguments);
+	}
+	if (node->redir)
+	{
 		i = 0;
 		while (node->redir[i])
 		{
 			free(node->redir[i]);
 			i++;
 		}
-        free(node->redir);       
-    }
-    if (node->file)
-    {
+		free(node->redir);
+	}
+	if (node->file)
+	{
 		i = 0;
 		while (node->file[i])
 		{
-            free(node->file[i]); 
+			free(node->file[i]);
 			i++;
 		}
-        free(node->file);        
-    }
-    free(node);
+		free(node->file);
+	}
+	free(node);
 }
 /*
 void	free_comandes(t_command *command)

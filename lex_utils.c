@@ -6,14 +6,14 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:43:13 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 10:22:58 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:29:02 by smercado         ###   ########.fr       */
 /*   Updated: 2024/12/18 09:26:34 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	is_argument (t_lex **list_lex, t_lex **cur_lex)
+int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 {
 	t_lex	*tmp_list;
 
@@ -45,47 +45,29 @@ int	is_terminated(t_token *token, t_token *list_tok)
 	{
 		if (token == tmp_list->next)
 			break ;
-	tmp_list = tmp_list->next;
+		tmp_list = tmp_list->next;
 	}
-	if (tmp_list->terminated || (tmp_list->type == OPERATOR && !tmp_list->char_buf))
+	if (tmp_list->terminated || (tmp_list->type == OPERATOR && \
+		!tmp_list->char_buf))
 		return (1);
 	return (0);
 }
 
-static void	print_type(t_lex_type e)
+int	is_word(t_token *token)
 {
-	if (e == UNSET)
-		printf("type: UNSET\n");
-	if (e == PRINCIPAL_WORD)
-		printf("type: PRINCIPAL_WORD\n");
-	if (e == REDIRECTION)
-		printf("type: REDIRECTION\n");
-	if (e == PIP)
-		printf("type: PIP\n");
+	if (token->type == WORD || token->type == DQUOTE || token->type == QUOTE)
+		return (1);
+	return (0);
 }
 
-void	lex_debug(t_lex *lex)
+t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 {
-	int i = 1;
-	int	j;
-	while (lex)
-	{
-		j = 0;
-		printf("Nodo %d\n", i);
-		print_type(lex->type);
-		printf("comando numero: %d\n", lex->command_num); 
-		printf("command: %s\n", lex->command);
-		print_operator(lex->redir_type);
-		if (lex->arguments)
-		{
-			while (lex->arguments[j])
-			{	
-				printf("argument[%d]: %s\n", j, lex->arguments[j]);
-				j++;
-			}
-		}
-		printf("\n");
-		i++;
-		lex = lex->next;
-	}
+	t_lex	*my_lex;
+
+	my_lex = ft_calloc(1, sizeof(t_lex));
+	my_lex->command = NULL;
+	my_lex->command_num = *cmd_num;
+	if (lex)
+		lex->next = my_lex;
+	return (my_lex);
 }

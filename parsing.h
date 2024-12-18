@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 11:52:05 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:13:39 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void				manage_words(t_token *token, t_lex **cur_lex,
 						t_lex **list_lex, int *command_num);
 int					is_argument(t_lex **list_lex, t_lex **cur_lex);
 int					is_terminated(t_token *token, t_token *list_tok);
+int					is_word(t_token *token);
 t_lex				*make_new_lex(t_lex *lex, int *cmd_num);
 void				lex_debug(t_lex *lex);
 void				append_redirection_word(t_token *token, t_lex **cur_lex,
