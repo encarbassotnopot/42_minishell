@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:26:46 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 13:06:04 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:52:55 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	command_debug(t_command *command)
 			j = 0;
 			while (command->file[j])
 			{
-				print_operator(*command->redir[j]);
+				print_operator(command->redir[j]);
 				printf("file: %s\n", command->file[j]);
 				j++;
 			}
