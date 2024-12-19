@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 12:13:39 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:25:36 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,10 @@ void				command_debug(t_command *command);
 // comandes_utils
 void				parse_error(t_command **command, t_lex **list_lex,
 						char *str);
-void				free_lex_list(t_lex **list_lex);
-void				free_command_list(t_command **command);
+void				free_lex_list(t_lex *list_lex);
 void				free_lex_node(t_lex *node);
-void				free_command_node(t_command *node);
 void				free_cmd_node(t_command *cmd);
 void				free_comandes(t_command *command);
+void				free_tokens(t_token *tokens);
 
 #endif
