@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/18 12:37:30 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:04:20 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include "readline/history.h"
 # include "readline/readline.h"
+
+# define P_READ 0
+# define P_WRITE 1
 
 typedef enum e_operator_type
 {
@@ -37,6 +41,7 @@ typedef struct s_command
 	char				**arguments;
 	t_operator_type		**redir;
 	char				**file;
+	int					fds[2];
 	struct s_command	*next;
 }						t_command;
 

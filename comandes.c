@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comandes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 13:23:35 by smercado         ###   ########.fr       */
-/*   Updated: 2024/12/18 09:49:40 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:58:20 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +36,8 @@ static t_command	*make_new_command(t_command *com)
 	t_command	*my_com;
 
 	my_com = ft_calloc(1, sizeof(t_command));
-	my_com->arguments = NULL;
+	my_com->fds[P_READ] = STDIN_FILENO;
+	my_com->fds[P_WRITE] = STDOUT_FILENO;
 	if (com)
 		com->next = my_com;
 	return (my_com);
@@ -61,8 +61,8 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 	}
 }
 
-static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, \
-			t_command **list_com)
+static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
+		t_command **list_com)
 {
 	int	i;
 
@@ -71,8 +71,8 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com, \
 	{
 		if (!(*cur_com)->file)
 		{
-			(*cur_com)->redir = ft_calloc((get_lex_size(lex)), \
-				sizeof(t_operator_type));
+			(*cur_com)->redir = ft_calloc((get_lex_size(lex)),
+					sizeof(t_operator_type));
 			(*cur_com)->file = ft_calloc((get_lex_size(lex)), sizeof(char **));
 		}
 		while ((*cur_com)->file[i])
