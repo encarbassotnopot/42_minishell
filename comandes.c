@@ -71,15 +71,13 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
 	{
 		if (!(*cur_com)->file)
 		{
-			(*cur_com)->redir = ft_calloc((get_lex_size(lex)),
-					sizeof(t_operator_type));
-			(*cur_com)->file = ft_calloc((get_lex_size(lex)), sizeof(char **));
+			(*cur_com)->redir = ft_calloc((get_lex_size(lex)), sizeof(t_operator_type));
+			(*cur_com)->file = ft_calloc((get_lex_size(lex)), sizeof(char *));
 		}
 		while ((*cur_com)->file[i])
 			i++;
 		(*cur_com)->file[i] = ft_strdup(lex->command);
-		(*cur_com)->redir[i] = ft_calloc(1, sizeof(t_operator_type));
-		*((*cur_com)->redir[i]) = lex->redir_type;
+		(*cur_com)->redir[i] = lex->redir_type;
 	}
 	else if ((*list_lex) && (*list_lex)->next)
 	{
