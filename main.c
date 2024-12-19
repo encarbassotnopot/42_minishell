@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 10:04:26 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:01:04 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,12 @@ int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
 	t_token		*tokens;
-	t_token		*old_t;
 	t_lex		*lex;
 	t_command	*command;
 	pid_t		ex;
 
+	
+	init_signals();
 	while (1)
 	{
 		line = readline("minishell_test: ");
@@ -128,21 +129,18 @@ int	main(int argc, char **argv, char **envp)
 				ex = run_commands(command, envp);
 				waitpid(ex, 0, 0);
 			}
-			old_t = tokens;
-			tokens = tokens->next;
-			while (tokens)
-			{
-				free(old_t->char_buf);
-				free(old_t);
-				old_t = tokens;
-				tokens = tokens->next;
-			}
-			free(old_t->char_buf);
-			free(old_t->next);
-			free(old_t);
+			free_comandes(command);
 		}
 		else
-			break ;
+		{
+			//detectat Ctrl+D
+			if (line == NULL)
+			{
+				printf("exit\n");
+				rl_clear_history();
+				exit(0);
+			}
+		}
 	}
 	rl_clear_history();
 	exit(0);
