@@ -95,6 +95,8 @@ int	setup_redirs(t_command *command)
 	int		fd;
 
 	i = -1;
+	if (!command->redir)
+		return (0);
 	while (command->redir[++i] && command->file[i])
 	{
 		if (command->redir[i] == LESS)
