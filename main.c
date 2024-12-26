@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 15:01:04 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/26 12:01:09 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,17 @@ void	tok_debug_line(t_token *t)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char		*line;
-	t_token		*tokens;
-	t_lex		*lex;
-	t_command	*command;
-	pid_t		ex;
+	char			*line;
+	t_token			*tokens;
+	t_lex			*lex;
+	t_command		*command;
+	pid_t			ex;
+	t_environment	*env;
 
-	
+	env = init_env(envp);
+	print_env(env);
 	init_signals();
-	while (1)
+	while (0)
 	{
 		line = readline("minishell_test: ");
 		if (line)
@@ -121,9 +123,9 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			expand_tokens(tokens);
 			lex = redefine_token_lex(tokens);
-			lex_debug(lex);
+			// lex_debug(lex);
 			command = redefine_lex(lex);
-			command_debug(command);
+			// command_debug(command);
 			if (command)
 			{
 				ex = run_commands(command, envp);
@@ -133,7 +135,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 		{
-			//detectat Ctrl+D
+			// detectat Ctrl+D
 			if (line == NULL)
 			{
 				printf("exit\n");
