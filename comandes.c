@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 18:45:51 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/27 19:25:23 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	get_redir_size(t_lex *lex)
 	i = 0;
 	while (lex && lex->type != PIP)
 	{
-		if (lex->type == REDIRECTION)
+		if (lex->redir_type != OP_UNSET)
 			i++;
 		lex = lex->next;
 	}
