@@ -6,16 +6,17 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:43:13 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/18 12:29:02 by smercado         ###   ########.fr       */
-/*   Updated: 2024/12/18 09:26:34 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 18:59:21 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 /**
- * Checks if cur_lex is an argument. It iterates through the lex list, looking for the command_num and principal word.
- * If it finds it, it means it's an argument and returns 1. Otherwise, it returns 0.
+ * Checks if cur_lex is an argument. It iterates through the lex list,
+ * looking for the command_num and principal word.
+ * If it finds it, it means it's an argument and returns 1.
+ * Otherwise, it returns 0.
  */
 int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 {
@@ -24,21 +25,22 @@ int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 	tmp_list = *list_lex;
 	while (tmp_list)
 	{
-		if (tmp_list->type == PRINCIPAL_WORD && \
-			(*cur_lex)->command_num == tmp_list->command_num)
+		if (tmp_list->type == PRINCIPAL_WORD
+			&& (*cur_lex)->command_num == tmp_list->command_num)
 			break ;
 		tmp_list = tmp_list->next;
 	}
 	if (tmp_list)
 	{
-		if (tmp_list->type == PRINCIPAL_WORD && \
-			(*cur_lex)->command_num == tmp_list->command_num)
+		if (tmp_list->type == PRINCIPAL_WORD
+			&& (*cur_lex)->command_num == tmp_list->command_num)
 			return (1);
 	}
 	return (0);
 }
 /**
- * Checks if the given token is terminated, based on the previous token in the token list.
+ * Checks if the given token is terminated, based on
+ * the previous token in the token list.
  * Returns 1 if the token is terminated, otherwise 0.
  */
 int	is_terminated(t_token *token, t_token *list_tok)
@@ -54,8 +56,8 @@ int	is_terminated(t_token *token, t_token *list_tok)
 			break ;
 		tmp_list = tmp_list->next;
 	}
-	if (tmp_list->terminated || (tmp_list->type == OPERATOR && \
-		!tmp_list->char_buf))
+	if (tmp_list->terminated || (tmp_list->type == OPERATOR
+			&& !tmp_list->char_buf))
 		return (1);
 	return (0);
 }

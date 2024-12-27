@@ -6,15 +6,16 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 10:45:29 by smercado         ###   ########.fr       */
-/*   Updated: 2024/12/18 09:03:41 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 18:55:17 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 /**
- * Once the token is classified as an argument, it ensures it belongs to a structure that already contains a principal_word and matches the command number.
+ * Once the token is classified as an argument, it ensures it belongs to a
+ * structure that already contains a principal_word and matches the command
+ * number.
  * Handles whether it is a new argument or the next one in the list.
  */
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
@@ -24,8 +25,8 @@ void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 	tmp = *l_lex;
 	while (tmp)
 	{
-		if (tmp->type == PRINCIPAL_WORD && \
-			(*cur_lex)->command_num == tmp->command_num)
+		if (tmp->type == PRINCIPAL_WORD
+			&& (*cur_lex)->command_num == tmp->command_num)
 			break ;
 		tmp = tmp->next;
 	}
@@ -36,10 +37,11 @@ void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 }
 
 /**
- * Handles started words by adding them as an argument or setting them as the first word.
+ * Handles started words by adding them as an argument
+ * or setting them as the first word.
  */
-void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, \
-		t_token *token, int *comand_num)
+void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, t_token *token,
+		int *comand_num)
 {
 	if ((*cur_lex)->redir_type == OP_UNSET && (!(*cur_lex)->arguments))
 		append_first_word(token, cur_lex, comand_num);
@@ -48,9 +50,10 @@ void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, \
 }
 
 /**
- * Handles unstarted words by adding them as an argument or setting them as the first word.
+ * Handles unstarted words by adding them as an argument
+ * or setting them as the first word.
  */
-void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, \
+void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex,
 		int *comand_num)
 {
 	if (is_argument(list_lex, cur_lex))
@@ -80,8 +83,9 @@ void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
 	}
 }
 /**
- * Iterates through the token list and classifies tokens as operators, words, or words after redirections.
- * Checks if a word is terminated or started, foor example l"s".
+ * Iterates through the token list and classifies tokens as
+ * operators, words, or words after redirections.
+ * Checks if a word is terminated or started, for example l"s".
  */
 t_lex	*redefine_token_lex(t_token *token)
 {

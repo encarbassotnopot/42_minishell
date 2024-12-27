@@ -13,7 +13,8 @@
 #include "parsing.h"
 
 /**
- * Calculates and returns the size of the lex, counting the space for the main word and arguments.
+ * Calculates and returns the size of the lex,
+ * counting the space for the main word and arguments.
  */
 static int	get_lex_size(t_lex *lex)
 {
@@ -51,7 +52,9 @@ static t_command	*make_new_command(t_command *com)
 }
 
 /**
- * Allocates memory and adds a main word and its arguments to the new command, without distinguishing between words or arguments and placing them all in the same array.
+ * Allocates memory and adds a main word and its arguments to the new command,
+ * without distinguishing between words or arguments
+ * and placing them all in the same array.
  */
 static void	add_word(t_lex *lex, t_command **cur_com)
 {
@@ -72,7 +75,8 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 }
 
 /**
- * Adds a redirection to the redirection array, assigning the file and the corresponding redirection type.
+ * Adds a redirection to the redirection array,
+ * assigning the file and the corresponding redirection type.
  * If no valid redirection is found, it throws an error.
  */
 static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
@@ -104,7 +108,8 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
 }
 
 /**
- * Iterates through the lex list and creates commands with all combined: argument array, 	redirections and files.
+ * Iterates through the lex list and creates commands with all combined:
+ * argument array, redirections and files.
  * If a pipe is encountered, a new command is created.
  * Sets SIGQUIT to behave like Ctrl+C.
  */
