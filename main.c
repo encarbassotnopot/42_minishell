@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 14:24:51 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/27 16:31:46 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,8 @@ int	main(int argc, char **argv, char **envp)
 					|| (command->file && command->file[0])))
 			{
 				ex = run_commands(command, envp);
-				waitpid(ex, 0, 0);
+				while (ex--)
+					waitpid(ex, 0, 0);
 			}
 			free_comandes(command);
 			signal(SIGQUIT, SIG_IGN);
