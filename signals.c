@@ -6,7 +6,7 @@
 /*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 08:38:54 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 13:28:44 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:46:54 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	init_signals(void)
 void	run_signint(int sig)
 {
 	(void)sig;
-	printf("\n");
+	
+	
 	rl_on_new_line();
+	printf("\n");
 	rl_replace_line("", 0);
 	rl_redisplay();
 	signal(SIGQUIT, SIG_IGN);

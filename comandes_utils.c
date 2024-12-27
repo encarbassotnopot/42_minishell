@@ -13,6 +13,9 @@
 
 #include "parsing.h"
 
+/**
+ * Prints an error message and frees commands and lexs list.
+ */
 void	parse_error(t_command **command, t_lex **list_lex, char *str)
 {
 	printf("%s\n", str);
@@ -23,6 +26,9 @@ void	parse_error(t_command **command, t_lex **list_lex, char *str)
 	exit (-1);
 }
 
+/**
+ * Frees the memory of a lex node, including its command and arguments.
+ */
 void	free_lex_node(t_lex *node)
 {
 	int	i;
@@ -42,6 +48,9 @@ void	free_lex_node(t_lex *node)
 	free(node);
 }
 
+/**
+ * Frees the memory of a command node, including its arguments, redirections, and files.
+ */
 void	free_cmd_node(t_command *cmd) 
 {
 	int	i;

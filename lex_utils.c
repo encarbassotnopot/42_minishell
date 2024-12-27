@@ -13,6 +13,10 @@
 
 #include "parsing.h"
 
+/**
+ * Checks if cur_lex is an argument. It iterates through the lex list, looking for the command_num and principal word.
+ * If it finds it, it means it's an argument and returns 1. Otherwise, it returns 0.
+ */
 int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 {
 	t_lex	*tmp_list;
@@ -33,7 +37,10 @@ int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 	}
 	return (0);
 }
-
+/**
+ * Checks if the given token is terminated, based on the previous token in the token list.
+ * Returns 1 if the token is terminated, otherwise 0.
+ */
 int	is_terminated(t_token *token, t_token *list_tok)
 {
 	t_token	*tmp_list;
@@ -53,6 +60,10 @@ int	is_terminated(t_token *token, t_token *list_tok)
 	return (0);
 }
 
+/**
+ * Checks if the token is a word, a double quote, or a single quote.
+ * Returns 1 if the token is one of these types, otherwise 0.
+ */
 int	is_word(t_token *token)
 {
 	if (token->type == WORD || token->type == DQUOTE || token->type == QUOTE)
@@ -60,6 +71,9 @@ int	is_word(t_token *token)
 	return (0);
 }
 
+/**
+ * Creates and returns a new lex node.
+ */
 t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 {
 	t_lex	*my_lex;

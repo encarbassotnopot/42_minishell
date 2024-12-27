@@ -6,31 +6,38 @@
 /*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 15:51:22 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:53:28 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+/**
+ * Calculates and returns the size of the lex, counting the space for the main word and arguments.
+ */
 static int	get_lex_size(t_lex *lex)
 {
-	t_lex	*tmp_lex;
-	int		i;
+	int	j;
+	int	i;
 
-	i = 0;
+	i = 1;
+	j = 0;
 	if (!lex)
 		return (0);
-	tmp_lex = lex;
-	while (tmp_lex)
+	if (lex->arguments)
 	{
-		i++;
-		if (!tmp_lex->next)
-			return (i + 1);
-		tmp_lex = tmp_lex->next;
+		while (lex->arguments[j])
+		{
+			i++;
+			j++;
+		}
 	}
 	return (i + 1);
 }
 
+/**
+ * Creates and returns a new command.
+ */
 static t_command	*make_new_command(t_command *com)
 {
 	t_command	*my_com;
@@ -43,6 +50,9 @@ static t_command	*make_new_command(t_command *com)
 	return (my_com);
 }
 
+/**
+ * Allocates memory and adds a main word and its arguments to the new command, without distinguishing between words or arguments and placing them all in the same array.
+ */
 static void	add_word(t_lex *lex, t_command **cur_com)
 {
 	int	i;
@@ -61,6 +71,10 @@ static void	add_word(t_lex *lex, t_command **cur_com)
 	}
 }
 
+/**
+ * Adds a redirection to the redirection array, assigning the file and the corresponding redirection type.
+ * If no valid redirection is found, it throws an error.
+ */
 static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
 		t_command **list_com)
 {
@@ -89,6 +103,11 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command **cur_com,
 		parse_error(list_com, list_lex, "parse error near `n'");
 }
 
+/**
+ * Iterates through the lex list and creates commands with all combined: argument array, 	redirections and files.
+ * If a pipe is encountered, a new command is created.
+ * Sets SIGQUIT to behave like Ctrl+C.
+ */
 t_command	*redefine_lex(t_lex *list_lex)
 {
 	t_command	*cur_com;
@@ -112,7 +131,7 @@ t_command	*redefine_lex(t_lex *list_lex)
 			add_word(tmp_lex, &cur_com);
 		tmp_lex = tmp_lex->next;
 	}
-	signal(SIGQUIT, run_sigquit);
+	//signal(SIGQUIT, run_sigquit);
 	free_lex_list(list_lex);
 	return (list_com);
 }

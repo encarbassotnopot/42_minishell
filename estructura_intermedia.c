@@ -6,13 +6,17 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 14:26:03 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 10:45:29 by smercado         ###   ########.fr       */
 /*   Updated: 2024/12/18 09:03:41 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+/**
+ * Once the token is classified as an argument, it ensures it belongs to a structure that already contains a principal_word and matches the command number.
+ * Handles whether it is a new argument or the next one in the list.
+ */
 void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 {
 	t_lex	*tmp;
@@ -31,6 +35,9 @@ void	append_args(t_token *tok, t_lex **cur_lex, t_lex **l_lex)
 		append_next_argument(tmp, tok);
 }
 
+/**
+ * Handles started words by adding them as an argument or setting them as the first word.
+ */
 void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, \
 		t_token *token, int *comand_num)
 {
@@ -40,6 +47,9 @@ void	manage_started_words(t_lex **cur_lex, t_lex **list_lex, \
 		append_started_argument(list_lex, cur_lex, token);
 }
 
+/**
+ * Handles unstarted words by adding them as an argument or setting them as the first word.
+ */
 void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, \
 		int *comand_num)
 {
@@ -48,7 +58,10 @@ void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex, \
 	else
 		append_first_word(token, cur_lex, comand_num);
 }
-
+/**
+ * Handles operators, updating the lexical element type as redirection or pipe.
+ * Increments the command count if a pipe is encountered.
+ */
 void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
 {
 	if ((*cur_lex) && (*cur_lex)->type != UNSET)
@@ -66,7 +79,10 @@ void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
 			*cur_lex = make_new_lex(*cur_lex, comand_num);
 	}
 }
-
+/**
+ * Iterates through the token list and classifies tokens as operators, words, or words after redirections.
+ * Checks if a word is terminated or started, foor example l"s".
+ */
 t_lex	*redefine_token_lex(t_token *token)
 {
 	t_lex	*cur_lex;

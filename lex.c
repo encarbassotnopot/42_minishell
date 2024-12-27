@@ -13,6 +13,10 @@
 
 #include "parsing.h"
 
+/**
+ * Adds the word following a redirection as its argument.
+ * handle unterminate words (example: if fi"le"1 is found, it adds it as "file1").
+ */
 void	append_redirection_word(t_token *token, t_lex **cur_lex, t_token \
 		**list_token, t_lex **list_lex)
 {
@@ -33,6 +37,10 @@ void	append_redirection_word(t_token *token, t_lex **cur_lex, t_token \
 		(*cur_lex)->type = PRINCIPAL_WORD;
 }
 
+/**
+ * Sets Principal_Word or concatenates it to the existing command.
+ * Creates a new lex if necessary and updates the command number.
+ */
 void	append_first_word(t_token *tok, t_lex **cur_lex, int *cnum)
 {
 	char	*temp;
@@ -53,7 +61,10 @@ void	append_first_word(t_token *tok, t_lex **cur_lex, int *cnum)
 		(*cur_lex)->command = temp;
 	}
 }
-
+/**
+ * Creates a new array of arguments (size of the token list).
+ * The first argument is set as the provided token.
+ */
 void	append_new_argument(t_token *tok, t_lex *tmp)
 {
 	t_token	*token_temp;
@@ -69,7 +80,10 @@ void	append_new_argument(t_token *tok, t_lex *tmp)
 	tmp->arguments = ft_calloc((i + 1), sizeof(char **));
 	tmp->arguments[0] = ft_strdup(tok->char_buf);
 }
-
+/**
+ * Searches for where to attach the argument based on command_num, 
+ while (argument array++ and adds the token to the last found argument.
+ */
 void	append_started_argument(t_lex **l_lex, t_lex **cur_lex, t_token *tok)
 {
 	int		i;
@@ -91,7 +105,9 @@ void	append_started_argument(t_lex **l_lex, t_lex **cur_lex, t_token *tok)
 	free(tmp->arguments[i - 1]);
 	tmp->arguments[i - 1] = str_temp;
 }
-
+/**
+ * Adds a new argument to the end of the list.
+ */
 void	append_next_argument(t_lex *tmp, t_token *tok)
 {
 	int		i;
