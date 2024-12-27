@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 11:55:11 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 14:24:51 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ int	main(int argc, char **argv, char **envp)
 	init_signals();
 	while (1)
 	{
-		line = readline("minishell_test: ");
-		if (line)
+		line = readline("minishell $> ");
+		if (line && !ft_isspace_str(line))
 		{
 			add_history(line);
 			tokens = tokenization(line);
@@ -126,7 +126,8 @@ int	main(int argc, char **argv, char **envp)
 			// lex_debug(lex);
 			command = redefine_lex(lex);
 			// command_debug(command);
-			if (command)
+			if (command && ((command->arguments && command->arguments[0])
+					|| (command->file && command->file[0])))
 			{
 				ex = run_commands(command, envp);
 				waitpid(ex, 0, 0);
@@ -136,6 +137,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 		{
+			free(line);
 			// detectat Ctrl+D
 			if (line == NULL)
 			{
