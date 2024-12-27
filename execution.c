@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/27 11:57:41 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/27 16:37:47 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,27 @@ int	redir_append(char *file)
 }
 
 /**
+ * Overwrites a command's fd and closes the old one.
+ * Doesn't close std fds and returns the close value.
+ * fd_type must be P_READ or P_WRITE
+ */
+int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
+{
+	int	ret;
+
+	ret = 0;
+	if (fd_type == P_WRITE && cmd->fds[P_WRITE] != STDOUT_FILENO)
+		ret = close(cmd->fds[P_WRITE]);
+	if (fd_type == P_READ && cmd->fds[P_READ] != STDIN_FILENO)
+		ret = close(cmd->fds[P_READ]);
+	if (fd_type == P_READ)
+		cmd->fds[P_READ] = new_fd;
+	else if (fd_type == P_WRITE)
+		cmd->fds[P_WRITE] = new_fd;
+	return (ret);
+}
+
+/**
  * Iterates through a command's redirections and sets them up.
  * Returns -1 on error, 0 otherwise.
  */
@@ -108,9 +129,9 @@ int	setup_redirs(t_command *command)
 		if (fd == -1)
 			return (-1);
 		if (command->redir[i] == LESS)
-			command->fds[P_READ] = fd;
+			overwrite_fd(command, P_READ, fd);
 		else
-			command->fds[P_WRITE] = fd;
+			overwrite_fd(command, P_WRITE, fd);
 	}
 	return (0);
 }
@@ -119,6 +140,7 @@ int	setup_redirs(t_command *command)
  * Runs the given command.
  * This function should only be called by the child resulting from a fork.
  *
+ *
  * Edge case: a command might not even contain a command,
  * and thus be made up only of redirections.
  * In this case, we will set up all the redirections, but we won't call execve.
@@ -126,9 +148,11 @@ int	setup_redirs(t_command *command)
 void	run_command(t_command *command, char **envp)
 {
 	char	*fp;
+	int		ret;
 
+	ret = 0;
 	if (setup_redirs(command) == -1)
-		exit(EXIT_FAILURE);
+		pexit("redir");
 	if (dup2(command->fds[P_READ], STDIN_FILENO) == -1)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
@@ -138,10 +162,11 @@ void	run_command(t_command *command, char **envp)
 	else
 		fp = command->arguments[0];
 	if (fp)
-		execve(fp, command->arguments, envp);
+		if (execve(fp, command->arguments, envp))
+			ret = -1;
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
-	exit(0);
+	exit(ret);
 }
 
 /**
@@ -180,6 +205,14 @@ int	run_commands(t_command *command, char **envp)
 	else if (pid == 0)
 	{
 		run_command(command, envp);
+		if (command->fds[P_WRITE] != STDOUT_FILENO)
+			close(command->fds[P_WRITE]);
+		if (command->fds[P_READ] != STDIN_FILENO)
+			close(command->fds[P_READ]);
 	}
+	if (command->fds[P_WRITE] != STDOUT_FILENO)
+		close(command->fds[P_WRITE]);
+	if (command->fds[P_READ] != STDIN_FILENO)
+		close(command->fds[P_READ]);
 	return (count + 1);
 }
