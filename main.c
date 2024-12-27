@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/26 12:01:09 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/27 09:55:11 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(envp);
 	print_env(env);
 	init_signals();
-	while (0)
+	while (1)
 	{
 		line = readline("minishell_test: ");
 		if (line)

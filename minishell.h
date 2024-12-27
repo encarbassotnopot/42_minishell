@@ -6,13 +6,15 @@
 /*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/19 15:51:38 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:20:04 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft.h"
+# include <fcntl.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -30,11 +32,11 @@
 typedef enum e_operator_type
 {
 	OP_UNSET,
-	LESS,
-	GREAT,
-	DLESS,
-	DGREAT,
-	PIPE,
+	LESS,   // <
+	GREAT,  // >
+	DLESS,  // <<
+	DGREAT, // >>
+	PIPE,   // |
 }						t_operator_type;
 
 typedef struct s_command
@@ -46,8 +48,8 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_command;
 
-void	init_signals(void);
-void	run_signint(int sig);
-void	run_sigquit(int sig);
+void					init_signals(void);
+void					run_signint(int sig);
+void					run_sigquit(int sig);
 
 #endif
