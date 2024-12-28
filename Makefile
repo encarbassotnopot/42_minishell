@@ -2,7 +2,7 @@ SRC_FILES = $(wildcard *.c)
 OBJ_FILES = $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 DEP_FILES = $(patsubst %.c,$(BUILD_DIR)/%.d,$(SRC_FILES))
 
-HDR_FLAGS = -I $(LIBFT) -I .
+HDR_FLAGS = -I $(LIBFT) -I $(INCLUDE)
 LIB_FLAGS = $(LIBFT_FLAGS) $(READLINE_FLAGS)
 BUILD_DIR = build
 
@@ -10,6 +10,8 @@ NAME = minishell
 CFLAGS = -Wall -Wextra -g -MMD $(HDR_FLAGS)
 
 CC = gcc
+
+INCLUDE = $(CURDIR)/include
 
 LIBFT = $(CURDIR)/libft
 LIBFT_TARGET = $(LIBFT)/libft.so

@@ -6,11 +6,12 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 10:53:29 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 13:33:19 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "here_doc.h"
 
 char	*get_exe(char *path, char *name)
 {
@@ -41,6 +42,7 @@ char	*get_exe(char *path, char *name)
 /**
  * Iterates through a command's redirections and sets them up.
  * Returns -1 on error, 0 otherwise.
+ * When a here_doc is encountered, the
  */
 int	setup_redirs(t_command *command)
 {
@@ -58,9 +60,11 @@ int	setup_redirs(t_command *command)
 			fd = redir_trunc(command->file[i]);
 		else if (command->redir[i] == DGREAT)
 			fd = redir_append(command->file[i]);
+		else if (command->redir[i] == DLESS)
+			fd = here_doc(command, command->file[i]);
 		if (fd == -1)
 			return (-1);
-		if (command->redir[i] == LESS)
+		if (command->redir[i] == LESS || command->redir[i] == DLESS)
 			overwrite_fd(command, P_READ, fd);
 		else
 			overwrite_fd(command, P_WRITE, fd);
@@ -89,6 +93,8 @@ void	run_command(t_command *command, char **envp)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
+	if (command->here_buf)
+		here_feed(command);
 	if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
 		fp = get_exe(getenv("PATH"), command->arguments[0]);
 	else

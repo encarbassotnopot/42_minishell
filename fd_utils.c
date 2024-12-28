@@ -6,11 +6,12 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:48:05 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 10:56:59 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 13:00:16 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "here_doc.h"
 
 /**
  * Atempts opening a file for reading.
@@ -64,7 +65,10 @@ int	redir_append(char *file)
 /**
  * Overwrites a command's fd and closes the old one.
  * Doesn't close std fds and returns the close value.
- * fd_type must be P_READ or P_WRITE
+ * fd_type must be P_READ or P_WRITE.
+ *
+ * If the new_fd is STDIN_FILENO and fd_type is P_READ we assume a here_doc
+ * was encountered. Otherwise we will make sure the here_doc content's is empty.
  */
 int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 {
@@ -76,7 +80,11 @@ int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 	if (fd_type == P_READ && cmd->fds[P_READ] != STDIN_FILENO)
 		ret = close(cmd->fds[P_READ]);
 	if (fd_type == P_READ)
+	{
 		cmd->fds[P_READ] = new_fd;
+		if (new_fd != STDIN_FILENO)
+			here_clean(cmd);
+	}
 	else if (fd_type == P_WRITE)
 		cmd->fds[P_WRITE] = new_fd;
 	return (ret);

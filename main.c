@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 17:03:51 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 11:49:44 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ int	main(int argc, char **argv, char **envp)
 	t_environment	*env;
 
 	env = init_env(envp);
-	print_env(env);
+	// print_env(env);
 	init_signals();
-	while (1)
+	while (1312)
 	{
 		line = readline("minishell $> ");
 		if (line && !ft_isspace_str(line))
@@ -125,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 			lex = redefine_token_lex(tokens);
 			// lex_debug(lex);
 			command = redefine_lex(lex);
-			// command_debug(command);
+			command_debug(command);
 			if (command && ((command->arguments && command->arguments[0])
 					|| (command->file && command->file[0])))
 			{
