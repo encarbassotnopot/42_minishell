@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:43:13 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 12:32:19 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:21:29 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,12 @@ t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 	return (my_lex);
 }
 
+/**
+ * Returns 0 if a parse error is encountered, 1 otherwise.
+ */
 int	checker_lex(t_lex *lex)
 {
-	t_lex	*tmp_lex;
+	t_lex *tmp_lex;
 
 	tmp_lex = lex;
 	while (tmp_lex)
@@ -100,7 +103,7 @@ int	checker_lex(t_lex *lex)
 		{
 			if (!tmp_lex->command)
 			{
-				parse_error("parse error near `n'");
+				printf("parse error near `n'\n");
 				return (0);
 			}
 		}
@@ -108,7 +111,7 @@ int	checker_lex(t_lex *lex)
 		{
 			if (!tmp_lex->next)
 			{
-				parse_error("parse error near `|'");
+				printf("parse error near `|'\n");
 				return (0);
 			}
 		}
