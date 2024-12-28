@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 15:57:46 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:11:35 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	run_commands(t_command *command, char **envp)
 			run_command(command, envp);
 		}
 		count++;
+		cmd_fd_close(command);
 		command = command->next;
 	}
 	pid = fork();
