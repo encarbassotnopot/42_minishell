@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/27 16:37:47 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:53:29 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,74 +36,6 @@ char	*get_exe(char *path, char *name)
 		free(paths[i]);
 	free(paths);
 	return (file);
-}
-
-/**
- * Atempts opening a file for reading.
- * Returns its fd or -1 on error.
- */
-int	redir_read(char *file)
-{
-	int	fd;
-
-	if (access(file, R_OK) == -1)
-	{
-		perror("couldn't access file for reading");
-		return (-1);
-	}
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		perror("couldn't open file for reading");
-	return (fd);
-}
-/**
- *  Tries to open or create a file for (truncated) writing.
- * Returns its fd or -1 on error.
- */
-int	redir_trunc(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (fd == -1)
-		perror("couldn't open/create file for writing");
-	return (fd);
-}
-/**
- * Tries to open or create a file for writing, appending text to the end.
- * Returns its fd or -1 on error.
- */
-int	redir_append(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_WRONLY | O_CREAT | O_APPEND,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (fd == -1)
-		perror("couldn't open/create file for writing");
-	return (fd);
-}
-
-/**
- * Overwrites a command's fd and closes the old one.
- * Doesn't close std fds and returns the close value.
- * fd_type must be P_READ or P_WRITE
- */
-int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
-{
-	int	ret;
-
-	ret = 0;
-	if (fd_type == P_WRITE && cmd->fds[P_WRITE] != STDOUT_FILENO)
-		ret = close(cmd->fds[P_WRITE]);
-	if (fd_type == P_READ && cmd->fds[P_READ] != STDIN_FILENO)
-		ret = close(cmd->fds[P_READ]);
-	if (fd_type == P_READ)
-		cmd->fds[P_READ] = new_fd;
-	else if (fd_type == P_WRITE)
-		cmd->fds[P_WRITE] = new_fd;
-	return (ret);
 }
 
 /**
@@ -193,10 +125,6 @@ int	run_commands(t_command *command, char **envp)
 			run_command(command, envp);
 		}
 		count++;
-		if (command->fds[P_WRITE] != STDOUT_FILENO)
-			close(command->fds[P_WRITE]);
-		if (command->fds[P_READ] != STDIN_FILENO)
-			close(command->fds[P_READ]);
 		command = command->next;
 	}
 	pid = fork();
@@ -205,14 +133,8 @@ int	run_commands(t_command *command, char **envp)
 	else if (pid == 0)
 	{
 		run_command(command, envp);
-		if (command->fds[P_WRITE] != STDOUT_FILENO)
-			close(command->fds[P_WRITE]);
-		if (command->fds[P_READ] != STDIN_FILENO)
-			close(command->fds[P_READ]);
+		cmd_fd_close(command);
 	}
-	if (command->fds[P_WRITE] != STDOUT_FILENO)
-		close(command->fds[P_WRITE]);
-	if (command->fds[P_READ] != STDIN_FILENO)
-		close(command->fds[P_READ]);
+	cmd_fd_close(command);
 	return (count + 1);
 }
