@@ -6,7 +6,7 @@
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 12:51:00 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:09:16 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ int	main(int argc, char **argv, char **envp)
 	t_environment	*env;
 
 	env = init_env(envp);
-	print_env(env);
+	// print_env(env);
 	init_signals();
-	while (1)
+	while (1312)
 	{
 		line = readline("minishell $> ");
 		if (line && !ft_isspace_str(line))
