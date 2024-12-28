@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 17:03:51 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 12:51:00 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,18 +123,21 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			expand_tokens(tokens);
 			lex = redefine_token_lex(tokens);
-			// lex_debug(lex);
-			command = redefine_lex(lex);
-			// command_debug(command);
-			if (command && ((command->arguments && command->arguments[0])
-					|| (command->file && command->file[0])))
+			if (checker_lex(lex) == 1)
 			{
-				ex = run_commands(command, envp);
-				while (ex--)
-					waitpid(0, 0, 0);
+				//lex_debug(lex);
+				command = redefine_lex(lex);
+				//command_debug(command);
+				if (command && ((command->arguments && command->arguments[0])
+					|| (command->file && command->file[0])))
+				{
+					ex = run_commands(command, envp);
+					while (ex--)
+						waitpid(0, 0, 0);
+				}
+				free_comandes(command);
+				signal(SIGQUIT, SIG_IGN);
 			}
-			free_comandes(command);
-			signal(SIGQUIT, SIG_IGN);
 		}
 		else
 		{
@@ -147,6 +150,7 @@ int	main(int argc, char **argv, char **envp)
 				exit(0);
 			}
 		}
+		
 	}
 	rl_clear_history();
 	exit(0);

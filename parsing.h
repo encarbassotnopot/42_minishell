@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 14:25:36 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/28 12:33:58 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ t_command			*redefine_lex(t_lex *list_lex);
 void				command_debug(t_command *command);
 
 // comandes_utils
-void				parse_error(t_command **command, t_lex **list_lex,
-						char *str);
+void				parse_error(char *str);
 void				free_lex_list(t_lex *list_lex);
 void				free_lex_node(t_lex *node);
 void				free_cmd_node(t_command *cmd);
 void				free_comandes(t_command *command);
 void				free_tokens(t_token *tokens);
+int					checker_lex(t_lex *lex);
 
 #endif

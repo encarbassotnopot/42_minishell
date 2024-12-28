@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comandes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 19:25:23 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:51:18 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ static void	add_word(t_lex *lex, t_command *cur_com)
  * assigning the file and the corresponding redirection type.
  * If no valid redirection is found, it throws an error.
  */
-static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command *cur_com,
-		t_command **list_com)
+static void	add_redirection(t_lex *lex, t_command *cur_com)
 {
 	int	i;
 
@@ -107,13 +106,6 @@ static void	add_redirection(t_lex *lex, t_lex **list_lex, t_command *cur_com,
 	}
 	cur_com->file[i] = ft_strdup(lex->command);
 	cur_com->redir[i] = lex->redir_type;
-	// else if ((*list_lex) && (*list_lex)->next)
-	// {
-	// 	if ((*list_lex)->next->type == PIP)
-	// 		parse_error(list_com, list_lex, "parse error near `|'");
-	// 	parse_error(list_com, list_lex, "parse error near `n'");
-	// }
-	// else parse_error(list_com, list_lex, "parse error near `n'");
 }
 
 /**
@@ -137,14 +129,12 @@ t_command	*redefine_lex(t_lex *list_lex)
 	{
 		if (cur_lex->type == PIP)
 		{
-			if ((list_lex == cur_lex) || (!cur_lex->next))
-				parse_error(&list_com, &list_lex, "parse error near `|'");
 			cur_com = make_new_command(cur_com, get_arg_size(cur_lex->next),
-					get_redir_size(cur_lex->next));
+				get_redir_size(cur_lex->next));
 			add_word(cur_lex->next, cur_com);
 		}
 		else if (cur_lex->redir_type != OP_UNSET)
-			add_redirection(cur_lex, &list_lex, cur_com, &list_com);
+			add_redirection(cur_lex, cur_com);
 		cur_lex = cur_lex->next;
 	}
 	// signal(SIGQUIT, run_sigquit);

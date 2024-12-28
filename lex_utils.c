@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:43:13 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/27 18:59:21 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 12:32:19 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	is_argument(t_lex **list_lex, t_lex **cur_lex)
 	}
 	return (0);
 }
+
 /**
  * Checks if the given token is terminated, based on
  * the previous token in the token list.
@@ -86,4 +87,32 @@ t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
 	if (lex)
 		lex->next = my_lex;
 	return (my_lex);
+}
+
+int	checker_lex(t_lex *lex)
+{
+	t_lex	*tmp_lex;
+
+	tmp_lex = lex;
+	while (tmp_lex)
+	{
+		if (tmp_lex->type == REDIRECTION)
+		{
+			if (!tmp_lex->command)
+			{
+				parse_error("parse error near `n'");
+				return (0);
+			}
+		}
+		else if (tmp_lex->type == PIP)
+		{
+			if (!tmp_lex->next)
+			{
+				parse_error("parse error near `|'");
+				return (0);
+			}
+		}
+		tmp_lex = tmp_lex->next;
+	}
+	return (1);
 }

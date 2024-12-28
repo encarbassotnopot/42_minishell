@@ -3,27 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   comandes_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 14:30:00 by smercado         ###   ########.fr       */
-/*   Updated: 2024/12/18 10:16:17 by smercado         ###   ########.fr       */
+/*   Updated: 2024/12/28 12:32:41 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "parsing.h"
 
 /**
- * Prints an error message and frees commands and lexs list.
+ * Prints an error message.
  */
-void	parse_error(t_command **command, t_lex **list_lex, char *str)
+void	parse_error(char *str)
 {
 	printf("%s\n", str);
-	if (command && *command)
-		free_comandes(*command);
-	if (list_lex && *list_lex)
-		free_lex_list(*list_lex);
-	exit (-1);
 }
 
 /**
