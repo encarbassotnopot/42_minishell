@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 11:59:48 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 14:04:28 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:55:38 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution.h"
 #include "here_doc.h"
 
 /**
@@ -60,10 +61,8 @@ void	here_append(t_command *command, char *line)
 /**
  * Asks for user input until a line matching stop (or EOF) is found.
  * The input is saved in the here_buf list, found inside a command's own struct.
- *
- * Returns STDIN_FILENO for convenience. See the function `setup_redirs`.
  */
-int	here_doc(t_command *command, char *stop)
+void	here_doc(t_command *command, char *stop)
 {
 	char	*line;
 
@@ -75,7 +74,6 @@ int	here_doc(t_command *command, char *stop)
 		line = readline("heredoc > ");
 	}
 	free(line);
-	return (STDIN_FILENO);
 }
 
 /**
@@ -85,22 +83,17 @@ int	here_doc(t_command *command, char *stop)
 void	here_feed(t_command *command)
 {
 	t_here_buf	*buf;
-	int			fd;
+	int			fds[2];
 
 	buf = command->here_buf;
-	fd = dup(STDIN_FILENO);
-	fd = dup2(fd, STDIN_FILENO);
+	if (pipe(fds))
+		return ;
+	overwrite_fd(command, P_READ, fds[P_READ]);
 	while (buf)
 	{
-		write(fd, buf->line, ft_strlen(buf->line));
-		write(fd, "\n", 1);
+		write(fds[P_WRITE], buf->line, ft_strlen(buf->line));
+		write(fds[P_WRITE], "\n", 1);
 		buf = buf->next;
 	}
-	// FALTA AQUESTA MERDA COM CONY TANCO L'STDIN?????? (TODO)
-	// https://stackoverflow.com/questions/7383803/writing-to-stdin-and-reading-from-stdout-unix-linux-c-programming
-	// referencien tty, potser alguna funció d'aquestes??
-	printf("reading from: %d\n", fd);
-	printf("closing: %d\n", fd);
-	close(fd);
-	here_clean(command);
+	close(fds[P_WRITE]);
 }
