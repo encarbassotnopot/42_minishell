@@ -14,7 +14,7 @@
 # define EXECUTION_H
 # include "minishell.h"
 
-int		run_commands(t_command *command, char **envp, t_environment *env);
+int		run_commands(t_command *command, t_environment *env);
 void	pexit(char *error);
 int		my_perror(char *error, int ret);
 int		redir_read(char *file);

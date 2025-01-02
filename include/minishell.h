@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 13:15:35 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:18:31 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@
 void	init_signals(void);
 void	run_signint(int sig);
 void	run_sigquit(int sig);
+void	free_strarr(char **str);
 
 #endif
