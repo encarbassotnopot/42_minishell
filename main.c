@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 16:09:16 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 12:15:42 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ int	main(int argc, char **argv, char **envp)
 	t_token			*tokens;
 	t_lex			*lex;
 	t_command		*command;
-	pid_t			ex;
+	int				ex;
 	t_environment	*env;
 
 	env = init_env(envp);
-	// print_env(env);
 	init_signals();
 	while (1312)
 	{
@@ -125,16 +124,10 @@ int	main(int argc, char **argv, char **envp)
 			lex = redefine_token_lex(tokens);
 			if (checker_lex(lex) == 1)
 			{
-				//lex_debug(lex);
 				command = redefine_lex(lex);
-				//command_debug(command);
 				if (command && ((command->arguments && command->arguments[0])
-					|| (command->file && command->file[0])))
-				{
+						|| (command->file && command->file[0])))
 					ex = run_commands(command, envp);
-					while (ex--)
-						waitpid(0, 0, 0);
-				}
 				free_comandes(command);
 				signal(SIGQUIT, SIG_IGN);
 			}
@@ -142,7 +135,6 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			free(line);
-			// detectat Ctrl+D
 			if (line == NULL)
 			{
 				printf("exit\n");
@@ -150,7 +142,6 @@ int	main(int argc, char **argv, char **envp)
 				exit(0);
 			}
 		}
-		
 	}
 	rl_clear_history();
 	exit(0);

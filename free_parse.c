@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 12:30:34 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 14:40:54 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/02 10:23:05 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_tokens(t_token *tokens)
 {
-	t_token *old_t;
+	t_token	*old_t;
 
 	while (tokens)
 	{
@@ -44,7 +44,7 @@ void	free_comandes(t_command *command)
 	while (command)
 	{
 		tmp_com = command;
-		free_cmd_node(tmp_com);
+		free_comanda(tmp_com);
 		command = command->next;
 		free(tmp_com);
 	}

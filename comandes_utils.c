@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 18:24:50 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 10:23:02 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	free_lex_node(t_lex *node)
  * Frees the memory of a command node, including its arguments,
  * redirections, and files.
  */
-void	free_cmd_node(t_command *cmd)
+void	free_comanda(t_command *cmd)
 {
 	int	i;
 

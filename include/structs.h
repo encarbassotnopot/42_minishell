@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:25:49 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 13:35:03 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 10:16:39 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_command
 	int						fds[2];
 	t_here_buf				*here_buf;
 	struct s_command		*next;
+	pid_t					pid;
 }							t_command;
 
 #endif

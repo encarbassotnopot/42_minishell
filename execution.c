@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 18:13:39 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 12:14:15 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,35 +110,38 @@ void	run_command(t_command *command, char **envp)
 }
 
 /**
- * Runs a list of commands (pipeline). Returns the number of commands run.
+ * Runs a list of commands (pipeline).
+ * Returns the exit status of the last command.
  */
 int	run_commands(t_command *command, char **envp)
 {
-	int		count;
-	int		my_pipe[2];
-	pid_t	pid;
+	int	my_pipe[2];
+	int	exit;
 
-	count = 0;
 	while (command->next)
 	{
 		if (pipe(my_pipe) == -1)
-			pexit("pipe");
+			return (my_perror("pipe", -1));
 		command->fds[P_WRITE] = my_pipe[P_WRITE];
 		command->next->fds[P_READ] = my_pipe[P_READ];
-		pid = fork();
-		if (pid == -1)
-			pexit("fork");
-		else if (pid == 0)
+		command->pid = fork();
+		if (command->pid == -1)
+			return (my_perror("fork", -2));
+		else if (command->pid == 0)
 			run_command(command, envp);
 		cmd_fd_close(command);
-		count++;
 		command = command->next;
 	}
-	pid = fork();
-	if (pid == -1)
-		pexit("fork");
-	else if (pid == 0)
+	command->pid = fork();
+	if (command->pid == -1)
+		return (my_perror("pipe", -1));
+	else if (command->pid == 0)
 		run_command(command, envp);
 	cmd_fd_close(command);
-	return (count + 1);
+	while (command)
+	{
+		waitpid(command->pid, &exit, 0);
+		command = command->next;
+	}
+	return (exit);
 }

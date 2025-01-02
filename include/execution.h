@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 13:34:28 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 10:19:04 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 int				run_commands(t_command *command, char **envp);
 void			pexit(char *error);
+int				my_perror(char *error, int ret);
 t_environment	*init_env(char **envp);
 void			print_env(t_environment *env);
 int				redir_read(char *file);
