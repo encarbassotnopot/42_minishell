@@ -43,3 +43,14 @@ void	print_env(t_environment *env)
 		env = env->next;
 	}
 }
+
+char	*get_env_value(t_environment *env, char *name)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->name, name) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}

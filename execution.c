@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 12:14:15 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 12:30:18 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	setup_redirs(t_command *command)
  * and thus be made up only of redirections.
  * In this case, we will set up all the redirections, but we won't call execve.
  */
-void	run_command(t_command *command, char **envp)
+void	run_command(t_command *command, char **envp, t_environment env)
 {
 	char	*fp;
 	int		ret;
@@ -102,7 +102,10 @@ void	run_command(t_command *command, char **envp)
 	else
 		fp = command->arguments[0];
 	if (fp)
-		if (execve(fp, command->arguments, envp))
+	{
+		if (command->arguments[0] == "cd")
+			run_cd(command, env);
+			if (execve(fp, command->arguments, envp))
 			ret = -1;
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
@@ -113,7 +116,7 @@ void	run_command(t_command *command, char **envp)
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_commands(t_command *command, char **envp)
+int	run_commands(t_command *command, char **envp, t_environment env)
 {
 	int	my_pipe[2];
 	int	exit;
@@ -128,7 +131,7 @@ int	run_commands(t_command *command, char **envp)
 		if (command->pid == -1)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
-			run_command(command, envp);
+			run_command(command, envp, env);
 		cmd_fd_close(command);
 		command = command->next;
 	}
