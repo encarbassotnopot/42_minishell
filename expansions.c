@@ -6,10 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:02:02 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "environment.h"
 #include "parsing.h"
 
 /**
@@ -57,7 +58,7 @@ unsigned int	var_count(char *str)
 	return (count);
 }
 
-void	recreate_charbuf(t_token *const tok)
+void	recreate_charbuf(t_token *const tok, t_environment *env)
 {
 	char			*var;
 	char			**fragments;
@@ -74,7 +75,7 @@ void	recreate_charbuf(t_token *const tok)
 		{
 			*tok->char_buf = '\0';
 			tok->char_buf += 1 + get_var_len(tok->char_buf + 1);
-			fragments[++i] = getenv(var);
+			fragments[++i] = get_env_value(env, var);
 			fragments[++i] = tok->char_buf;
 			free(var);
 		}
@@ -85,7 +86,7 @@ void	recreate_charbuf(t_token *const tok)
 	free(fragments);
 }
 
-void	expand_tokens(t_token *const token)
+void	expand_tokens(t_token *const token, t_environment *env)
 {
 	t_token	*tok;
 	char	*old_buf;
@@ -96,7 +97,7 @@ void	expand_tokens(t_token *const token)
 		if (tok->type == WORD || tok->type == DQUOTE)
 		{
 			old_buf = tok->char_buf;
-			recreate_charbuf(tok);
+			recreate_charbuf(tok, env);
 			free(old_buf);
 		}
 		tok = tok->next;

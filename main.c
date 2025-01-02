@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 14:14:55 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:02:22 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 			tokens = tokenization(line);
 			free(line);
-			expand_tokens(tokens);
+			expand_tokens(tokens, env);
 			lex = redefine_token_lex(tokens);
 			if (checker_lex(lex) == 1)
 			{

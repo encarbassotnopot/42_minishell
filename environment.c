@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 11:23:16 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 14:48:50 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:01:26 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	**gen_env(t_environment *env)
 
 /**
  * Searches for a environment variable named `name` and
- * returns a pointer to its value.
+ * returns a copy of its value.
  * The pointer is NULL if the variable is unset.
  */
 char	*get_env_value(t_environment *env, char *name)
@@ -88,7 +88,7 @@ char	*get_env_value(t_environment *env, char *name)
 	while (env)
 	{
 		if (ft_strcmp(env->name, name) == 0)
-			return (env->value);
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
 	return (NULL);

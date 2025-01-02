@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 14:02:03 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/02 15:58:20 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "environment.h"
 #include "execution.h"
 #include "here_doc.h"
 
@@ -97,10 +98,10 @@ void	run_command(t_command *command, char **envp, t_environment *env)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
-	if (ft_strcmp(command->arguments[0], "cd"))
-			run_cd(command, env);
+	if (ft_strcmp(command->arguments[0], "cd") == 0)
+		run_cd(command, env);
 	else if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
-		fp = get_exe(getenv("PATH"), command->arguments[0]);
+		fp = get_exe(get_env_value(env, "PATH"), command->arguments[0]);
 	else
 		fp = command->arguments[0];
 	if (fp)

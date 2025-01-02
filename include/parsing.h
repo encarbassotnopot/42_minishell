@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 10:23:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:02:10 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "minishell.h"
 
 t_token		*tokenization(char *line);
-void		expand_tokens(t_token *const token);
+void		expand_tokens(t_token *const token, t_environment *env);
 void		print_operator(t_operator_type e);
 
 // lex operations
