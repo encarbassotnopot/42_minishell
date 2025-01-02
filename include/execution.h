@@ -6,7 +6,7 @@
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 12:32:05 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/02 13:31:14 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXECUTION_H
 # include "minishell.h"
 
-int				run_commands(t_command *command, char **envp);
+int				run_commands(t_command *command, char **envp, t_environment *env);
 void			pexit(char *error);
 int				my_perror(char *error, int ret);
 t_environment	*init_env(char **envp);

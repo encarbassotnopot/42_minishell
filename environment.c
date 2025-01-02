@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 11:23:16 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/26 12:00:09 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 13:13:04 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "minishell.h"
+#//include "execution.h"
 
 t_environment	*init_env(char **envp)
 {

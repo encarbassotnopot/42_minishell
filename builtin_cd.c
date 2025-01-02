@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 11:30:49 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/02 14:02:05 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "builtins.h"
 
 void    set_env_value(t_environment *env, char *name, char *value)
 {
@@ -39,7 +40,7 @@ int change_to_oldpwd(t_environment *env)
     return (ret);
 }
 
-int uptdate_oldpwd(t_environment *env)
+int update_oldpwd(t_environment *env)
 {
     char    *oldpwd;
     char  	*pwd;
@@ -67,7 +68,7 @@ int cd(char *directory, t_environment *env)
         update_oldpwd(env);
         directory = get_env_value(env, "HOME");
         if (!directory || directory[0] == '\0')
-            return (ft_printf("minishell : cd: HOME not set\n"), 1);
+            return (printf("minishell : cd: HOME not set\n"), 1);
     }
     if (directory[0] == '-')
         ret = change_to_oldpwd(env);
@@ -88,4 +89,5 @@ int run_cd(t_command *command, t_environment *env)
 	else
 		ret = cd(command->arguments[1], env);
 	printf("ret is %d\n", ret);
+    return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 12:15:42 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 13:30:40 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	main(int argc, char **argv, char **envp)
 				command = redefine_lex(lex);
 				if (command && ((command->arguments && command->arguments[0])
 						|| (command->file && command->file[0])))
-					ex = run_commands(command, envp);
+					ex = run_commands(command, envp, env);
 				free_comandes(command);
 				signal(SIGQUIT, SIG_IGN);
 			}
