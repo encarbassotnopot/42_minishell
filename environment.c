@@ -6,12 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 11:23:16 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 14:19:24 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 14:48:50 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
-#include "execution.h"
 
 /**
  * Initializes the env list with the envp given by main.
@@ -38,6 +37,7 @@ t_environment	*init_env(char **envp)
 	}
 	return (base.next);
 }
+
 /**
  * Prints the whole environment.
  */
@@ -48,6 +48,34 @@ void	print_env(t_environment *env)
 		printf("%s=%s\n", env->name, env->value);
 		env = env->next;
 	}
+}
+
+/**
+ * Generates a char** with all the environment variables.
+ */
+char	**gen_env(t_environment *env)
+{
+	char			**envp;
+	t_environment	*my_env;
+	size_t			i;
+
+	my_env = env;
+	i = 0;
+	while (my_env)
+	{
+		my_env = my_env->next;
+		i++;
+	}
+	envp = ft_calloc(i + 1, sizeof(char *));
+	my_env = env;
+	i = 0;
+	while (my_env && envp)
+	{
+		envp[i] = ft_strjoins(3, my_env->name, "=", my_env->value);
+		my_env = my_env->next;
+		i++;
+	}
+	return (envp);
 }
 
 /**
