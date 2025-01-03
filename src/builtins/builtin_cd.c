@@ -6,10 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 14:21:24 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:04:59 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
 #include "builtins.h"
 #include "environment.h"
 #include "minishell.h"
@@ -71,12 +72,21 @@ int	cd(char *directory, t_environment *env)
 
 int	run_cd(t_command *command, t_environment *env)
 {
-	int	ret;
+	int		ret;
+	int		arg_count;
+	char	*join_args;
 
-	if (command->arguments[2])
+	arg_count = 0;
+	while (command->arguments[arg_count])
+		arg_count++;
+	if (arg_count > 2)
 		return (printf("minishell : cd: too many arguments\n"), 1);
 	else
 		ret = cd(command->arguments[1], env);
-	printf("ret is %d\n", ret);
+	if (ret == -1)
+	{
+		printf("minishell: cd: %s: %s\n", strerror(errno), command->arguments[1]);
+		return (-1);
+	}
 	return (0);
 }
