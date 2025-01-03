@@ -1,10 +1,12 @@
-SRC_FILES = $(wildcard *.c)
-OBJ_FILES = $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
-DEP_FILES = $(patsubst %.c,$(BUILD_DIR)/%.d,$(SRC_FILES))
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
+DEP_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.d,$(SRC_FILES))
 
 HDR_FLAGS = -I $(LIBFT) -I $(INCLUDE)
 LIB_FLAGS = $(LIBFT_FLAGS) $(READLINE_FLAGS)
-BUILD_DIR = build
+SRC_DIR = $(CURDIR)/src
+BUILD_DIR = $(CURDIR)/build
+BUILD_DIRS = $(sort $(dir $(OBJ_FILES)))
 
 NAME = minishell
 CFLAGS = -Wall -Wextra -g -MMD $(HDR_FLAGS)
@@ -37,11 +39,11 @@ $(READLINE)/Makefile:
 readline:
 	make -C $(READLINE)
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c Makefile | $(BUILD_DIRS)
 	$(CC) $(CFLAGS) -o $@ -c $< 
 
-$(BUILD_DIR):
-	mkdir -p $@
+$(BUILD_DIRS): 
+	mkdir -p $@/
 
 $(NAME): $(READLINE_TARGET) $(LIBFT_TARGET) $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIB_FLAGS)
