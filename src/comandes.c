@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comandes.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 10:51:18 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:56:55 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ static void	add_redirection(t_lex *lex, t_command *cur_com)
  * Iterates through the lex list and creates commands with all combined:
  * argument array, redirections and files.
  * If a pipe is encountered, a new command is created.
- * Sets SIGQUIT to behave like Ctrl+C.
  */
 t_command	*redefine_lex(t_lex *list_lex)
 {
@@ -130,14 +129,13 @@ t_command	*redefine_lex(t_lex *list_lex)
 		if (cur_lex->type == PIP)
 		{
 			cur_com = make_new_command(cur_com, get_arg_size(cur_lex->next),
-				get_redir_size(cur_lex->next));
+					get_redir_size(cur_lex->next));
 			add_word(cur_lex->next, cur_com);
 		}
 		else if (cur_lex->redir_type != OP_UNSET)
 			add_redirection(cur_lex, cur_com);
 		cur_lex = cur_lex->next;
 	}
-	// signal(SIGQUIT, run_sigquit);
 	free_lex_list(list_lex);
 	return (list_com);
 }

@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:25:49 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 10:16:39 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:53:32 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ typedef enum e_token_type
 typedef enum e_operator_type
 {
 	OP_UNSET,
-	LESS,   // <
-	GREAT,  // >
-	DLESS,  // <<
-	DGREAT, // >>
-	PIPE,   // |
+	LESS,
+	GREAT,
+	DLESS,
+	DGREAT,
+	PIPE,
 }							t_operator_type;
 
 typedef enum e_lex_type
