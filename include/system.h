@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   system.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:27:43 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 13:31:30 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:14:44 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 15:04:59 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:40:10 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include "environment.h"
 #include "minishell.h"
 
+/*
+ * 1. get oldpwd (if no exist ->print error), updated old path with actual path
+ * 2. put oldpwd as actual.
+ */
 int	change_to_oldpwd(t_environment *env)
 {
 	int		ret;
@@ -27,7 +31,9 @@ int	change_to_oldpwd(t_environment *env)
 	ret = chdir(path_envp);
 	return (ret);
 }
-
+/*
+ * 1. get actual pwd and put it in oldpwd (if no exist, created) 
+ */
 int	update_oldpwd(t_environment *env)
 {
 	char	*oldpwd;
@@ -49,7 +55,7 @@ int	update_oldpwd(t_environment *env)
  * 3 If directory is not "-",
  * update the OLDPWD and change the directory to the new directory.
  */
-int	cd(char *directory, t_environment *env)
+static int	cd(char *directory, t_environment *env)
 {
 	int	ret;
 
@@ -70,6 +76,10 @@ int	cd(char *directory, t_environment *env)
 	return (ret);
 }
 
+/*
+ * 1. if cd has more than 1 arguments, return error. 
+ * 2. run cd and print ret if is an error type (errno)
+ */
 int	run_cd(t_command *command, t_environment *env)
 {
 	int		ret;
