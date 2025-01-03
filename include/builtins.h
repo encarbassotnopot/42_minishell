@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 14:10:43 by ecoma-ba         ###   ########.fr       */
+/*   Created: 2025/01/02 13:02:56 by smercado          #+#    #+#             */
+/*   Updated: 2025/01/02 14:14:39 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#ifndef BUILTINS_H
+# define BUILTINS_H
 # include "minishell.h"
 
-int		run_commands(t_command *command, t_environment *env);
-void	pexit(char *error);
-int		my_perror(char *error, int ret);
-int		redir_read(char *file);
-int		redir_trunc(char *file);
-int		redir_append(char *file);
-int		overwrite_fd(t_command *cmd, int fd_type, int new_fd);
-void	cmd_fd_close(t_command *command);
+int	change_to_oldpwd(t_environment *env);
+int	update_oldpwd(t_environment *env);
+int	cd(char *directory, t_environment *env);
+int	run_cd(t_command *command, t_environment *env);
 
 #endif

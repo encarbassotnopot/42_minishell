@@ -6,10 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 12:14:15 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:17:49 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "environment.h"
 #include "execution.h"
 #include "here_doc.h"
 
@@ -83,11 +84,13 @@ int	setup_redirs(t_command *command)
  * and thus be made up only of redirections.
  * In this case, we will set up all the redirections, but we won't call execve.
  */
-void	run_command(t_command *command, char **envp)
+void	run_command(t_command *command, t_environment *env)
 {
 	char	*fp;
 	int		ret;
+	char	**envp;
 
+	envp = gen_env(env);
 	ret = 0;
 	if (setup_redirs(command) == -1)
 		pexit("redir");
@@ -97,8 +100,10 @@ void	run_command(t_command *command, char **envp)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
-	if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
-		fp = get_exe(getenv("PATH"), command->arguments[0]);
+	if (ft_strcmp(command->arguments[0], "cd") == 0)
+		run_cd(command, env);
+	else if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
+		fp = get_exe(get_env_value(env, "PATH"), command->arguments[0]);
 	else
 		fp = command->arguments[0];
 	if (fp)
@@ -106,6 +111,7 @@ void	run_command(t_command *command, char **envp)
 			ret = -1;
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
+	free_strarr(envp);
 	exit(ret);
 }
 
@@ -113,7 +119,7 @@ void	run_command(t_command *command, char **envp)
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_commands(t_command *command, char **envp)
+int	run_commands(t_command *command, t_environment *env)
 {
 	int	my_pipe[2];
 	int	exit;
@@ -128,7 +134,7 @@ int	run_commands(t_command *command, char **envp)
 		if (command->pid == -1)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
-			run_command(command, envp);
+			run_command(command, env);
 		cmd_fd_close(command);
 		command = command->next;
 	}
@@ -136,7 +142,7 @@ int	run_commands(t_command *command, char **envp)
 	if (command->pid == -1)
 		return (my_perror("pipe", -1));
 	else if (command->pid == 0)
-		run_command(command, envp);
+		run_command(command, env);
 	cmd_fd_close(command);
 	while (command)
 	{

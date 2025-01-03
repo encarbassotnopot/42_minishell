@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 15:34:27 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:18:31 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "readline/history.h"
 # include "readline/readline.h"
 # include "structs.h"
+# include "builtins.h"
 
 # define P_READ 0
 # define P_WRITE 1
@@ -24,5 +25,6 @@
 void	init_signals(void);
 void	run_signint(int sig);
 void	run_sigquit(int sig);
+void	free_strarr(char **str);
 
 #endif

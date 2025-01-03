@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 14:10:43 by ecoma-ba         ###   ########.fr       */
+/*   Created: 2025/01/02 14:03:34 by ecoma-ba          #+#    #+#             */
+/*   Updated: 2025/01/02 14:46:57 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#ifndef ENVIRONMENT_H
+# define ENVIRONMENT_H
 # include "minishell.h"
 
-int		run_commands(t_command *command, t_environment *env);
-void	pexit(char *error);
-int		my_perror(char *error, int ret);
-int		redir_read(char *file);
-int		redir_trunc(char *file);
-int		redir_append(char *file);
-int		overwrite_fd(t_command *cmd, int fd_type, int new_fd);
-void	cmd_fd_close(t_command *command);
-
+t_environment	*init_env(char **envp);
+void			print_env(t_environment *env);
+char			*get_env_value(t_environment *env, char *name);
+void			set_env_value(t_environment **env, char *name, char *value);
+void			unset_env_value(t_environment **env, char *name);
+char			**gen_env(t_environment *env);
 #endif

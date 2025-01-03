@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 12:30:34 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 10:23:05 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:17:23 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,14 @@ void	free_comandes(t_command *command)
 		command = command->next;
 		free(tmp_com);
 	}
+}
+
+void	free_strarr(char **str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
 }
