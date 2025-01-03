@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:25:49 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/03 15:53:32 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:36:45 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,12 @@ typedef struct s_command
 	struct s_command		*next;
 	pid_t					pid;
 }							t_command;
+
+typedef struct s_shell
+{
+	int						exit;
+	t_command				*command;
+	t_environment			*env;
+}							t_shell;
 
 #endif

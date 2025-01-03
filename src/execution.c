@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 16:17:49 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:14:44 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*get_exe(char *path, char *name)
 	int		i;
 
 	i = -1;
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
 	if (!paths)
 		pexit("split");

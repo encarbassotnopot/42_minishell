@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:29:03 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 15:56:55 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:00:48 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,5 @@ t_command	*redefine_lex(t_lex *list_lex)
 			add_redirection(cur_lex, cur_com);
 		cur_lex = cur_lex->next;
 	}
-	free_lex_list(list_lex);
 	return (list_com);
 }

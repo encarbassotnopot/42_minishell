@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 16:02:10 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:49:36 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ t_command	*redefine_lex(t_lex *list_lex);
 void		command_debug(t_command *command);
 
 // comandes_utils
-void		free_lex_list(t_lex *list_lex);
-void		free_lex_node(t_lex *node);
-void		free_comanda(t_command *cmd);
-void		free_comandes(t_command *command);
-void		free_tokens(t_token *tokens);
+void		free_lex_list(t_lex **list_lex);
+void		free_lex_node(t_lex **node);
+void		free_comanda(t_command **cmd);
+void		free_comandes(t_command **command);
+void		free_tokens(t_token **tokens);
 int			checker_lex(t_lex *lex);
 
 #endif
