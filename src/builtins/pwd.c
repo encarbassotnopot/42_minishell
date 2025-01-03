@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/02 13:02:56 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 18:08:46 by smercado         ###   ########.fr       */
+/*   Created: 2025/01/03 17:07:51 by smercado          #+#    #+#             */
+/*   Updated: 2025/01/03 18:08:45 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
-# include "minishell.h"
+#include "minishell.h"
 
-int	run_cd(t_command *command, t_environment *env);
-int	run_echo(t_command *command);
-int	run_pwd(t_command *command, t_environment *env);
+int	run_pwd(t_command *command, t_environment *env)
+{
+	char	*buf;
 
-#endif
+	buf = getcwd(NULL, 0);
+	if (!buf)
+		return (printf("minishell: pwd: %s\n", strerror(errno)), -1);
+	printf("%s\n", buf);
+	return (0);
+	free(buf);
+}
