@@ -1,38 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   comandes_utils.c                                   :+:      :+:    :+:   */
+/*   free_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 10:23:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/03 15:55:41 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-/**
- * Frees the memory of a lex node, including its command and arguments.
- */
-void	free_lex_node(t_lex *node)
-{
-	int	i;
-
-	i = 0;
-	if (node->command)
-		free(node->command);
-	if (node->arguments)
-	{
-		while (node->arguments[i])
-		{
-			free(node->arguments[i]);
-			i++;
-		}
-		free(node->arguments);
-	}
-	free(node);
-}
 
 /**
  * Frees the memory of a command node, including its arguments,
@@ -64,4 +42,27 @@ void	free_comanda(t_command *cmd)
 		}
 		free(cmd->file);
 	}
+}
+
+void	free_comandes(t_command *command)
+{
+	t_command	*tmp_com;
+
+	while (command)
+	{
+		tmp_com = command;
+		free_comanda(tmp_com);
+		command = command->next;
+		free(tmp_com);
+	}
+}
+
+void	free_strarr(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
 }
