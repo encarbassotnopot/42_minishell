@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   system.h                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/28 13:27:43 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/03 15:14:44 by smercado         ###   ########.fr       */
+/*   Created: 2025/01/03 17:07:51 by smercado          #+#    #+#             */
+/*   Updated: 2025/01/03 18:08:45 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SYSTEM_H
-# define SYSTEM_H
-# include <fcntl.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include <errno.h>
-#endif
+#include "minishell.h"
+
+int	run_pwd(t_command *command, t_environment *env)
+{
+	char	*buf;
+
+	buf = getcwd(NULL, 0);
+	if (!buf)
+		return (printf("minishell: pwd: %s\n", strerror(errno)), -1);
+	printf("%s\n", buf);
+	return (0);
+	free(buf);
+}
