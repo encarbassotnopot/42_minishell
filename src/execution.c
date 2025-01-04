@@ -14,7 +14,7 @@
 #include "execution.h"
 #include "here_doc.h"
 
-char	*get_exe(char *path, char *name)
+char	*get_exe(const char *path, char *name)
 {
 	char	**paths;
 	char	*file;
@@ -105,7 +105,7 @@ void	run_command(t_command *command, t_environment *env)
 	if (ft_strcmp(command->arguments[0], "cd") == 0)
 		run_cd(command, env);
 	else if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
-		fp = get_exe(get_env_value(env, "PATH"), command->arguments[0]);
+		fp = get_exe(get_const_env_value(env, "PATH"), command->arguments[0]);
 	else
 		fp = command->arguments[0];
 	if (fp)

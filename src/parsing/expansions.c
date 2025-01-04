@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 16:02:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 12:36:51 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	recreate_charbuf(t_token *const tok, t_environment *env)
 		{
 			*tok->char_buf = '\0';
 			tok->char_buf += 1 + get_var_len(tok->char_buf + 1);
-			fragments[++i] = get_env_value(env, var);
+			fragments[++i] = get_const_env_value(env, var);
 			fragments[++i] = tok->char_buf;
 			free(var);
 		}

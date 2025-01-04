@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 12:31:45 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:27:36 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 #include "execution.h"
 #include "minishell.h"
 #include "parsing.h"
+
+/**
+ * Returns 1 if the given command is empty, 0 otherwise.
+ */
+int	check_empty_cmd(t_command *command)
+{
+	if (command->arguments && command->arguments[0])
+		return (0);
+	if (command->file && command->file[0])
+		return (0);
+	return (1);
+}
 
 /**
  * Parses a line into a command list. Returns NULL on error.
@@ -36,7 +48,11 @@ t_command	*parse_line(t_shell *shinfo, char *line)
 	lex = redefine_token_lex(tokens);
 	free_tokens(&tokens);
 	if (checker_lex(lex) == 1)
+	{
 		cmd = redefine_lex(lex);
+		if (check_empty_cmd(cmd))
+			free_comandes(&cmd);
+	}
 	else
 		cmd = NULL;
 	free_lex_list(&lex);
@@ -70,12 +86,15 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell $> ");
 		if (!line)
 			cleanup(&shinfo, "exit\n", 0);
+		if (ft_strcmp(line, "exit") == 0)
+		{
+			free(line);
+			cleanup(&shinfo, "exit\n", 0);
+		}
 		shinfo.command = parse_line(&shinfo, line);
 		if (!shinfo.command)
 			continue ;
-		else if ((shinfo.command->arguments && shinfo.command->arguments[0])
-			|| (shinfo.command->file && shinfo.command->file[0]))
-			shinfo.exit = run_commands(shinfo.command, shinfo.env);
+		shinfo.exit = run_commands(shinfo.command, shinfo.env);
 		free_comandes(&shinfo.command);
 		signal(SIGQUIT, SIG_IGN);
 	}
