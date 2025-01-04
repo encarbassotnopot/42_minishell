@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment.h                                      :+:      :+:    :+:   */
+/*   debug_utils.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/02 14:03:34 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 15:52:38 by ecoma-ba         ###   ########.fr       */
+/*   Created: 2025/01/04 15:42:14 by ecoma-ba          #+#    #+#             */
+/*   Updated: 2025/01/04 15:42:45 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVIRONMENT_H
-# define ENVIRONMENT_H
+#ifndef DEBUG_UTILS_H
+# define DEBUG_UTILS_H
 # include "minishell.h"
+# define RED "\x1b[31m"
+# define GREEN "\x1b[32m"
+# define YELLOW "\x1b[33m"
+# define BLUE "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define CYAN "\x1b[36m"
+# define RESET "\x1b[0m"
 
-t_environment	*init_env(char **envp);
-char			*get_env_value(t_environment *env, char *name);
-const char		*get_const_env_value(t_environment *env, char *name);
-void			set_env_value(t_environment **env, char *name, char *value);
-void			unset_env_value(t_environment **env, char *name);
-char			**gen_env(t_environment *env);
-void			free_env(t_environment **env);
+void	print_operator(t_operator_type e);
+void	print_operator_line(t_operator_type e);
+void	print_tok_type(t_token_type e);
 #endif

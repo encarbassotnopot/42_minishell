@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 13:43:10 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:53:56 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	free_strarr(char **str)
 		free(str[i]);
 	free(str);
 }
+
 /**
  * Frees the memory of a command node, including its arguments,
  * redirections, and files.
