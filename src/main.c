@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 13:52:20 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:44:08 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_command	*parse_line(t_shell *shinfo, char *line)
 	add_history(line);
 	tokens = tokenization(line);
 	free(line);
-	expand_tokens(tokens, shinfo->env);
+	expand_tokens(tokens, shinfo->env, shinfo);
 	lex = redefine_token_lex(tokens);
 	free_tokens(&tokens);
 	if (checker_lex(lex) == 1)
@@ -67,6 +67,7 @@ void	cleanup(t_shell *shinfo, char *msg, int status)
 {
 	free_comandes(&shinfo->command);
 	free_env(&shinfo->env);
+	free(shinfo->exit);
 	rl_clear_history();
 	ft_putstr_fd(msg, STDOUT_FILENO);
 	exit(status);
@@ -76,25 +77,27 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_shell	shinfo;
+	int		exit;
 
 	shinfo.command = NULL;
-	shinfo.exit = 0;
 	shinfo.env = init_env(envp);
+	exit = 0;
 	init_signals();
 	while (1312)
 	{
+		shinfo.exit = ft_itoa(exit);
 		line = readline("minishell $> ");
 		if (!line)
 			cleanup(&shinfo, "exit\n", 0);
-		if (ft_strcmp(line, "exit") == 0)
-		{
-			free(line);
-			cleanup(&shinfo, "exit\n", 0);
-		}
 		shinfo.command = parse_line(&shinfo, line);
 		if (!shinfo.command)
 			continue ;
-		shinfo.exit = run_commands(shinfo.command, shinfo.env, &shinfo);
+		exit = run_commands(shinfo.command, shinfo.env, &shinfo);
+		if (WIFEXITED(exit))
+			exit = WEXITSTATUS(exit);
+		else
+			exit = -1;
+		free(shinfo.exit);
 		free_comandes(&shinfo.command);
 		signal(SIGQUIT, SIG_IGN);
 	}

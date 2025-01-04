@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 15:59:13 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:42:46 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,31 @@ int	setup_redirs(t_command *command)
 }
 
 /**
+ * Gets the command's executable's full path.
+ * If it is not found, prints error to stderr.
+ */
+char	*get_fp(t_command *command, t_environment *env)
+{
+	char	*fp;
+
+	if (!command->arguments[0])
+		return (NULL);
+	if (!ft_strchr(command->arguments[0], '/'))
+	{
+		fp = get_exe(get_const_env_value(env, "PATH"), command->arguments[0]);
+		if (!fp)
+		{
+			ft_putstr_fd("Command not found: ", STDERR_FILENO);
+			ft_putstr_fd(command->arguments[0], STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+		}
+	}
+	else
+		fp = command->arguments[0];
+	return (fp);
+}
+
+/**
  * Runs the given command.
  * This function should only be called by the child resulting from a fork.
  *
@@ -102,18 +127,15 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
-	if (ft_strcmp(command->arguments[0], "cd") == 0)
-		run_cd(command, env);
-	else if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
-		fp = get_exe(get_const_env_value(env, "PATH"), command->arguments[0]);
-	else
-		fp = command->arguments[0];
+	// TODO: executar correctament builtins dins i fora de fork segons sigui pertinent
+	// if (ft_strcmp(command->arguments[0], "cd") == 0)
+	// 	run_cd(command, env);
+	fp = get_fp(command, env);
 	if (fp)
 		if (execve(fp, command->arguments, envp))
 			ret = -1;
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
-	free_strarr(envp);
 	cleanup(shinfo, NULL, ret);
 }
 
