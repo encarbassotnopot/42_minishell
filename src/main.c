@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 16:44:08 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:11:11 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	main(int argc, char **argv, char **envp)
 	init_signals();
 	while (1312)
 	{
+		free(shinfo.exit);
 		shinfo.exit = ft_itoa(exit);
 		line = readline("minishell $> ");
 		if (!line)
@@ -96,8 +97,7 @@ int	main(int argc, char **argv, char **envp)
 		if (WIFEXITED(exit))
 			exit = WEXITSTATUS(exit);
 		else
-			exit = -1;
-		free(shinfo.exit);
+			exit = -161;
 		free_comandes(&shinfo.command);
 		signal(SIGQUIT, SIG_IGN);
 	}
