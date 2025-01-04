@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 12:30:34 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 17:18:46 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:01:36 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	free_lex_node(t_lex **node)
 
 void	free_lex_list(t_lex **list_lex)
 {
-	t_lex *my_list_lex;
-	t_lex *temp;
+	t_lex	*my_list_lex;
+	t_lex	*temp;
 
 	if (!list_lex)
 		return ;

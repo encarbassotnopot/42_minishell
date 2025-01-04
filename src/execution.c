@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 13:53:48 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:59:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
 	free_strarr(envp);
-	cleanup(shinfo, NULL, 0);
+	cleanup(shinfo, NULL, ret);
 }
 
 /**

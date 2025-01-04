@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 18:07:31 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:57:19 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ static int	cd(char *directory, t_environment *env)
 		if (!directory || directory[0] == '\0')
 			return (printf("minishell : cd: HOME not set\n"), 1);
 	}
-	if (ft_strcmp(directory, '-') == 0)
+	if (ft_strcmp(directory, "-") == 0)
 		ret = change_to_oldpwd(env);
-	else if (ft_strcmp(directory, '.') == 0)
+	else if (ft_strcmp(directory, ".") == 0)
 		return (0);
-	else if (ft_strcmp(directory, '..') == 0)
+	else if (ft_strcmp(directory, "..") == 0)
 		printf("aqui .., de moment res xD\n");
 	else
 	{
