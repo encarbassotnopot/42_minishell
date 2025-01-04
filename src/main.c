@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 17:27:54 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 12:31:45 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "parsing.h"
 
 /**
- * Parses a line into a command list.
+ * Parses a line into a command list. Returns NULL on error.
  */
 t_command	*parse_line(t_shell *shinfo, char *line)
 {
@@ -50,6 +50,7 @@ t_command	*parse_line(t_shell *shinfo, char *line)
 void	cleanup(t_shell *shinfo, char *msg, int status)
 {
 	free_comandes(&shinfo->command);
+	free_env(&shinfo->env);
 	rl_clear_history();
 	ft_putstr_fd(msg, STDOUT_FILENO);
 	exit(status);
@@ -72,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 		shinfo.command = parse_line(&shinfo, line);
 		if (!shinfo.command)
 			continue ;
-		if ((shinfo.command->arguments && shinfo.command->arguments[0])
+		else if ((shinfo.command->arguments && shinfo.command->arguments[0])
 			|| (shinfo.command->file && shinfo.command->file[0]))
 			shinfo.exit = run_commands(shinfo.command, shinfo.env);
 		free_comandes(&shinfo.command);

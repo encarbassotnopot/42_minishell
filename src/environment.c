@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 11:23:16 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 16:01:26 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 12:31:41 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,22 @@ char	**gen_env(t_environment *env)
 
 /**
  * Searches for a environment variable named `name` and
+ * returns a pointer to its value.
+ * The pointer is NULL if the variable is unset.
+ */
+const char	*get_const_env_value(t_environment *env, char *name)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->name, name) == 0)
+			return (ft_strdup(env->value));
+		env = env->next;
+	}
+	return (NULL);
+}
+
+/**
+ * Searches for a environment variable named `name` and
  * returns a copy of its value.
  * The pointer is NULL if the variable is unset.
  */
@@ -121,7 +137,7 @@ void	set_env_value(t_environment **env, char *name, char *value)
 
 	if (!env || !name || !value)
 		return ;
-	if (get_env_value(*env, name))
+	if (get_const_env_value(*env, name))
 	{
 		update_env_value(*env, name, value);
 		return ;
@@ -173,4 +189,21 @@ void	unset_env_value(t_environment **env, char *name)
 		}
 		prev_env = prev_env->next;
 	}
+}
+
+void	free_env(t_environment **env)
+{
+	t_environment *my_env;
+	t_environment *last_env;
+
+	if (!env)
+		return ;
+	my_env = *env;
+	while (my_env)
+	{
+		last_env = my_env;
+		my_env = my_env->next;
+		free_env_entry(last_env);
+	}
+	*env = NULL;
 }
