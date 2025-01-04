@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/03 17:14:44 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:53:48 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	setup_redirs(t_command *command)
  * and thus be made up only of redirections.
  * In this case, we will set up all the redirections, but we won't call execve.
  */
-void	run_command(t_command *command, t_environment *env)
+void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	char	*fp;
 	int		ret;
@@ -114,14 +114,14 @@ void	run_command(t_command *command, t_environment *env)
 	close(command->fds[P_READ]);
 	close(command->fds[P_WRITE]);
 	free_strarr(envp);
-	exit(ret);
+	cleanup(shinfo, NULL, 0);
 }
 
 /**
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_commands(t_command *command, t_environment *env)
+int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	my_pipe[2];
 	int	exit;
@@ -136,7 +136,7 @@ int	run_commands(t_command *command, t_environment *env)
 		if (command->pid == -1)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
-			run_command(command, env);
+			run_command(command, env, shinfo);
 		cmd_fd_close(command);
 		command = command->next;
 	}
@@ -144,7 +144,7 @@ int	run_commands(t_command *command, t_environment *env)
 	if (command->pid == -1)
 		return (my_perror("pipe", -1));
 	else if (command->pid == 0)
-		run_command(command, env);
+		run_command(command, env, shinfo);
 	cmd_fd_close(command);
 	while (command)
 	{

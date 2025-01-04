@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 13:27:36 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:52:20 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 		shinfo.command = parse_line(&shinfo, line);
 		if (!shinfo.command)
 			continue ;
-		shinfo.exit = run_commands(shinfo.command, shinfo.env);
+		shinfo.exit = run_commands(shinfo.command, shinfo.env, &shinfo);
 		free_comandes(&shinfo.command);
 		signal(SIGQUIT, SIG_IGN);
 	}

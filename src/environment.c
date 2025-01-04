@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 11:23:16 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 12:39:11 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:50:31 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ const char	*get_const_env_value(t_environment *env, char *name)
 	while (env)
 	{
 		if (ft_strcmp(env->name, name) == 0)
-			return (ft_strdup(env->value));
+			return (env->value);
 		env = env->next;
 	}
 	return (NULL);
