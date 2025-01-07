@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:53:06 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:01:07 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,9 @@ static int	update_oldpwd(t_environment *env)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (printf("minishell : cd: getcwd failed\n"), 1);
-	oldpwd = get_const_env_value(env, "OLDPWD");
-	if (!oldpwd)
-		return (printf("minishell : cd: OLDPWD not set\n"), 1);
 	set_env_value(&env, "OLDPWD", pwd);
 	free(pwd);
 	return (0);
-}
-/*
- * 1. get oldpwd (if no exist->print error), updated old path with actual path
- * 2. put oldpwd as actual.
- */
-static int	change_to_oldpwd(t_environment *env)
-{
-	int		ret;
-	char	*path_envp;
-
-	path_envp = get_env_value(env, "OLDPWD");
-	if (!path_envp)
-		return (printf("minishell : cd: OLDPWD not set\n"), -1);
-	update_oldpwd(env);
-	ret = chdir(path_envp);
-	return (ret);
 }
 
 /*

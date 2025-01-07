@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 13:02:56 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:13:06 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:03:44 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 # define BUILTINS_H
 # include "minishell.h"
 
-int	run_cd(t_command *command, t_environment *env, t_shell *shinfo);
-int	run_echo(t_command *command, t_environment *env, t_shell *shinfo);
-int	run_env(t_command *command, t_environment *env, t_shell *shinfo);
-int	run_export(t_command *command, t_environment *env, t_shell *shinfo);
-int	run_unset(t_command *command, t_environment *env, t_shell *shinfo);
-int	run_pwd(t_command *command, t_environment *env, t_shell *shinfo);
-int	count_args(t_command *command);
+int		run_cd(t_command *command, t_environment *env, t_shell *shinfo);
+int		run_echo(t_command *command, t_environment *env, t_shell *shinfo);
+int		run_env(t_command *command, t_environment *env, t_shell *shinfo);
+int		run_export(t_command *command, t_environment *env, t_shell *shinfo);
+int		run_unset(t_command *command, t_environment *env, t_shell *shinfo);
+int		run_pwd(t_command *command, t_environment *env, t_shell *shinfo);
+void	run_exit(t_command *command, t_environment *env, t_shell *shinfo);
+int		count_args(t_command *command);
 
 #endif

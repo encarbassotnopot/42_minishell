@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:14:05 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:54:48 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ t_command	*parse_line(t_shell *shinfo, char *line)
 	free(line);
 	expand_tokens(tokens, shinfo->env, shinfo);
 	lex = redefine_token_lex(tokens);
+	lex_debug(lex);
 	free_tokens(&tokens);
 	if (checker_lex(lex) == 1)
 	{
 		cmd = redefine_lex(lex);
+		command_debug(cmd);
 		if (check_empty_cmd(cmd))
 			free_comandes(&cmd);
 	}

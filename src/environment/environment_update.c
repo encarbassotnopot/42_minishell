@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 15:36:12 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 15:45:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:24:25 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	unset_env_value(t_environment **env, char *name)
 	if (ft_strcmp(prev_env->name, name) == 0)
 	{
 		next_env = prev_env->next;
-		free_env_entry(prev_env->next);
+		free_env_entry(prev_env);
 		*env = next_env;
 		return ;
 	}

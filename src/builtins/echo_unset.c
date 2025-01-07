@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 15:43:34 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:08:35 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int	run_unset(t_command *command, t_environment *env, t_shell *shinfo)
 		return (0);
 	while (arg_count > i)
 	{
-		if (get_const_env_value(env, command->arguments[i]))
-			unset_env_value(&env, command->arguments[i]);
+		unset_env_value(&env, command->arguments[i]);
 		i++;
 	}
 	return (0);
