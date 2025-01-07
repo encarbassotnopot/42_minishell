@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 11:36:05 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:18:43 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	cd(char *directory, t_environment *env)
  * 1. if cd has more than 1 arguments, return error.
  * 2. run cd and print ret if is an error type (errno)
  */
-int	run_cd(t_command *command, t_environment *env)
+int	run_cd(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	ret;
 	int	arg_count;

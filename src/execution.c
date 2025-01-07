@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/04 17:02:22 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:10:08 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,15 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
-	// TODO: executar correctament builtins dins i fora de fork segons sigui pertinent
-	// if (ft_strcmp(command->arguments[0], "cd") == 0)
-	// 	run_cd(command, env);
-	fp = get_fp(command, env, &ret);
-	if (fp)
-		if (execve(fp, command->arguments, envp))
-			ret = -1;
+	if (is_builtin(command))
+		ret = run_builtin(command, env, shinfo);
+	else
+	{
+		fp = get_fp(command, env, &ret);
+		if (fp)
+			if (execve(fp, command->arguments, envp))
+				ret = -1;
+	}
 	cmd_fd_close(command);
 	free_strarr(envp);
 	cleanup(shinfo, NULL, ret);
@@ -144,7 +146,7 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
+int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	my_pipe[2];
 	int	exit;
@@ -175,4 +177,12 @@ int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 		command = command->next;
 	}
 	return (exit);
+}
+
+int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
+{
+	if (command->next || !is_raw_builtin(command))
+		return (run_pipeline(command, env, shinfo));
+	else
+		return (run_builtin(command, env, shinfo));
 }
