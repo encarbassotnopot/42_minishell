@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 15:57:19 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 11:36:05 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,6 @@ static int	cd(char *directory, t_environment *env)
 	}
 	if (ft_strcmp(directory, "-") == 0)
 		ret = change_to_oldpwd(env);
-	else if (ft_strcmp(directory, ".") == 0)
-		return (0);
-	else if (ft_strcmp(directory, "..") == 0)
-		printf("aqui .., de moment res xD\n");
 	else
 	{
 		update_oldpwd(env);
@@ -88,9 +84,7 @@ int	run_cd(t_command *command, t_environment *env)
 	int	ret;
 	int	arg_count;
 
-	arg_count = 0;
-	while (command->arguments[arg_count])
-		arg_count++;
+	arg_count = count_args(command);
 	if (arg_count > 2)
 		return (printf("minishell : cd: too many arguments\n"), 1);
 	else
