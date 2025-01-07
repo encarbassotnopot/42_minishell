@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 15:43:34 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 18:08:44 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/07 11:55:22 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "minishell.h"
 
-int	run_echo(t_command *command)
+int	run_echo(t_command *command, t_environment *env)
 {
 	int	arg_count;
 	int	i;
