@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 10:22:34 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/07 13:20:30 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ int (*get_builtin(t_command *command))(t_command *, t_environment *, t_shell *)
 	if (ft_strcmp(name, "cd") == 0)
 		return (run_cd);
 	if (ft_strcmp(name, "export") == 0)
-		return (NULL);
+		return (run_export);
 	if (ft_strcmp(name, "unset") == 0)
-		return (NULL);
+		return (run_unset);
 	if (ft_strcmp(name, "exit") == 0)
 		return (NULL);
 	if (ft_strcmp(name, "echo") == 0)
-		return (NULL);
+		return (run_echo);
 	if (ft_strcmp(name, "env") == 0)
 		return (run_env);
 	if (ft_strcmp(name, "pwd") == 0)

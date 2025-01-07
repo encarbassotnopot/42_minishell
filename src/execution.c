@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/07 12:10:08 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:00:01 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 	int		ret;
 	char	**envp;
 
-	envp = gen_env(env);
 	ret = 0;
 	if (setup_redirs(command) == -1)
 		pexit("redir");
@@ -132,13 +131,13 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 		ret = run_builtin(command, env, shinfo);
 	else
 	{
+		envp = gen_env(env);
 		fp = get_fp(command, env, &ret);
 		if (fp)
 			if (execve(fp, command->arguments, envp))
 				ret = -1;
+		free_strarr(envp);
 	}
-	cmd_fd_close(command);
-	free_strarr(envp);
 	cleanup(shinfo, NULL, ret);
 }
 
@@ -162,7 +161,6 @@ int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
 			run_command(command, env, shinfo);
-		cmd_fd_close(command);
 		command = command->next;
 	}
 	command->pid = fork();
@@ -170,7 +168,6 @@ int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 		return (my_perror("pipe", -1));
 	else if (command->pid == 0)
 		run_command(command, env, shinfo);
-	cmd_fd_close(command);
 	while (command)
 	{
 		waitpid(command->pid, &exit, 0);

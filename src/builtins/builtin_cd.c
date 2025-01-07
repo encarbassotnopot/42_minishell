@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 13:18:43 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	run_cd(t_command *command, t_environment *env, t_shell *shinfo)
 	int	ret;
 	int	arg_count;
 
+	(void)shinfo;
 	arg_count = count_args(command);
 	if (arg_count > 2)
 		return (printf("minishell : cd: too many arguments\n"), 1);

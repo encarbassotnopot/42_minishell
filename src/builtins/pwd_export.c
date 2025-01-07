@@ -6,11 +6,11 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:07:51 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 13:21:16 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environment.h"
 
 int	run_export(t_command *command, t_environment *env, t_shell *shinfo)
 {
