@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:52:22 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 16:02:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:37:43 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ size_t	get_var_len(char *str)
 	size_t	len;
 
 	len = 0;
+	if (*str == '?')
+		return (1);
 	while (ft_isalnum(str[len]) || str[len] == '_')
 		len++;
 	return (len);
@@ -58,7 +60,15 @@ unsigned int	var_count(char *str)
 	return (count);
 }
 
-void	recreate_charbuf(t_token *const tok, t_environment *env)
+char	*get_var_text(char *name, t_environment *env, t_shell *shinfo)
+{
+	if (ft_strcmp(name, "?") == 0)
+		return (shinfo->exit);
+	return ((char *)get_const_env_value(env, name));
+}
+
+void	recreate_charbuf(t_token *const tok, t_environment *env,
+		t_shell *shinfo)
 {
 	char			*var;
 	char			**fragments;
@@ -75,7 +85,7 @@ void	recreate_charbuf(t_token *const tok, t_environment *env)
 		{
 			*tok->char_buf = '\0';
 			tok->char_buf += 1 + get_var_len(tok->char_buf + 1);
-			fragments[++i] = get_env_value(env, var);
+			fragments[++i] = get_var_text(var, env, shinfo);
 			fragments[++i] = tok->char_buf;
 			free(var);
 		}
@@ -86,7 +96,7 @@ void	recreate_charbuf(t_token *const tok, t_environment *env)
 	free(fragments);
 }
 
-void	expand_tokens(t_token *const token, t_environment *env)
+void	expand_tokens(t_token *const token, t_environment *env, t_shell *shinfo)
 {
 	t_token	*tok;
 	char	*old_buf;
@@ -97,7 +107,7 @@ void	expand_tokens(t_token *const token, t_environment *env)
 		if (tok->type == WORD || tok->type == DQUOTE)
 		{
 			old_buf = tok->char_buf;
-			recreate_charbuf(tok, env);
+			recreate_charbuf(tok, env, shinfo);
 			free(old_buf);
 		}
 		tok = tok->next;

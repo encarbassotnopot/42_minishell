@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:25:49 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 10:16:39 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:33:38 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ typedef enum e_token_type
 typedef enum e_operator_type
 {
 	OP_UNSET,
-	LESS,   // <
-	GREAT,  // >
-	DLESS,  // <<
-	DGREAT, // >>
-	PIPE,   // |
+	LESS,
+	GREAT,
+	DLESS,
+	DGREAT,
+	PIPE,
 }							t_operator_type;
 
 typedef enum e_lex_type
@@ -84,5 +84,12 @@ typedef struct s_command
 	struct s_command		*next;
 	pid_t					pid;
 }							t_command;
+
+typedef struct s_shell
+{
+	char					*exit;
+	t_command				*command;
+	t_environment			*env;
+}							t_shell;
 
 #endif

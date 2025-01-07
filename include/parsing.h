@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 16:02:10 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:35:52 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 # include "minishell.h"
 
 t_token		*tokenization(char *line);
-void		expand_tokens(t_token *const token, t_environment *env);
+void		expand_tokens(t_token *const token, t_environment *env,
+				t_shell *shinfo);
 void		print_operator(t_operator_type e);
 
 // lex operations
@@ -42,11 +43,11 @@ t_command	*redefine_lex(t_lex *list_lex);
 void		command_debug(t_command *command);
 
 // comandes_utils
-void		free_lex_list(t_lex *list_lex);
-void		free_lex_node(t_lex *node);
-void		free_comanda(t_command *cmd);
-void		free_comandes(t_command *command);
-void		free_tokens(t_token *tokens);
+void		free_lex_list(t_lex **list_lex);
+void		free_lex_node(t_lex **node);
+void		free_comanda(t_command **cmd);
+void		free_comandes(t_command **command);
+void		free_tokens(t_token **tokens);
 int			checker_lex(t_lex *lex);
 
 #endif

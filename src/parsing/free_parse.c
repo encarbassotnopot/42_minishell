@@ -6,56 +6,70 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 12:30:34 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 16:17:23 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:01:36 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	free_tokens(t_token *tokens)
+void	free_tokens(t_token **tokens)
 {
+	t_token	*my_t;
 	t_token	*old_t;
 
-	while (tokens)
+	if (!*tokens)
+		return ;
+	my_t = *tokens;
+	while (my_t)
 	{
-		old_t = tokens;
-		tokens = tokens->next;
+		old_t = my_t;
+		my_t = my_t->next;
 		free(old_t->char_buf);
 		free(old_t);
 	}
+	*tokens = NULL;
 }
 
-void	free_lex_list(t_lex *list_lex)
+/**
+ * Frees the memory of a lex node, including its command and arguments.
+ */
+void	free_lex_node(t_lex **node)
 {
+	int		i;
+	t_lex	*my_node;
+
+	if (!node)
+		return ;
+	my_node = *node;
+	i = 0;
+	if (my_node->command)
+		free(my_node->command);
+	if (my_node->arguments)
+	{
+		while (my_node->arguments[i])
+		{
+			free(my_node->arguments[i]);
+			i++;
+		}
+		free(my_node->arguments);
+	}
+	free(my_node);
+	*node = NULL;
+}
+
+void	free_lex_list(t_lex **list_lex)
+{
+	t_lex	*my_list_lex;
 	t_lex	*temp;
 
-	while (list_lex)
+	if (!list_lex)
+		return ;
+	my_list_lex = *list_lex;
+	while (my_list_lex)
 	{
-		temp = list_lex;
-		list_lex = list_lex->next;
-		free_lex_node(temp);
+		temp = my_list_lex;
+		my_list_lex = my_list_lex->next;
+		free_lex_node(&temp);
 	}
-}
-
-void	free_comandes(t_command *command)
-{
-	t_command	*tmp_com;
-
-	while (command)
-	{
-		tmp_com = command;
-		free_comanda(tmp_com);
-		command = command->next;
-		free(tmp_com);
-	}
-}
-
-void	free_strarr(char **str)
-{
-	int i;
-
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
+	*list_lex = NULL;
 }

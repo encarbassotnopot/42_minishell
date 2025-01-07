@@ -3,16 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   debuger_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:26:46 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/19 12:52:55 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:53:45 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "debug_utils.h"
 
-static void	print_type(t_lex_type e)
+void	tok_debug(t_token *t)
+{
+	while (t)
+	{
+		print_tok_type(t->type);
+		printf("chbuf: %s\n", t->char_buf);
+		print_operator(t->oper);
+		printf("terminated?: %i\n\n", t->terminated);
+		t = t->next;
+	}
+}
+
+void	tok_debug_line(t_token *t)
+{
+	printf("line: ");
+	while (t)
+	{
+		if (t->type == OPERATOR)
+		{
+			printf(RED);
+			print_operator_line(t->oper);
+		}
+		if (t->type == QUOTE)
+			printf(GREEN);
+		if (t->type == DQUOTE)
+			printf(BLUE);
+		if (t->type && t->char_buf)
+			printf("%s", t->char_buf);
+		printf(RESET);
+		if (t->terminated)
+			printf(" ");
+		t = t->next;
+	}
+	printf("\n\n");
+}
+
+static void	print_lex_type(t_lex_type e)
 {
 	if (e == UNSET)
 		printf("type: UNSET\n");
@@ -34,7 +70,7 @@ void	lex_debug(t_lex *lex)
 	{
 		j = 0;
 		printf("Nodo %d\n", i);
-		print_type(lex->type);
+		print_lex_type(lex->type);
 		printf("comando numero: %d\n", lex->command_num);
 		printf("command: %s\n", lex->command);
 		print_operator(lex->redir_type);
@@ -57,30 +93,25 @@ void	command_debug(t_command *command)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	while (command)
 	{
-		j = 0;
-		printf("\ncomanda %d\n", i);
+		j = -1;
+		printf("\ncomanda %d\n", ++i);
 		if (command->arguments)
 		{
-			while (command->arguments[j])
-			{
+			while (command->arguments[++j])
 				printf("argument[%d]: %s\n", j, command->arguments[j]);
-				j++;
-			}
 		}
 		if (command->file)
 		{
-			j = 0;
-			while (command->file[j])
+			j = -1;
+			while (command->file[++j])
 			{
 				print_operator(command->redir[j]);
 				printf("file: %s\n", command->file[j]);
-				j++;
 			}
 		}
 		command = command->next;
-		i++;
 	}
 }

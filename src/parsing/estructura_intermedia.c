@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   estructura_intermedia.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:06:14 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/28 11:03:02 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:01:27 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ void	manage_words(t_token *token, t_lex **cur_lex, t_lex **list_lex,
 	else
 		append_first_word(token, cur_lex, comand_num);
 }
+
 /**
  * Handles operators, updating the lexical element type as redirection or pipe.
  * Increments the command count if a pipe is encountered.
  */
 void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
 {
-	if (((*cur_lex) && (*cur_lex)->type != UNSET) || ((*cur_lex)->command != NULL && (*cur_lex)->type == UNSET))
+	if (((*cur_lex) && (*cur_lex)->type != UNSET)
+		|| ((*cur_lex)->command != NULL && (*cur_lex)->type == UNSET))
 		*cur_lex = make_new_lex(*cur_lex, comand_num);
 	if (token->oper != PIPE)
 	{
@@ -82,6 +84,7 @@ void	manage_operators(t_token *token, t_lex **cur_lex, int *comand_num)
 			*cur_lex = make_new_lex(*cur_lex, comand_num);
 	}
 }
+
 /**
  * Iterates through the token list and classifies tokens as
  * operators, words, or words after redirections.
@@ -113,6 +116,5 @@ t_lex	*redefine_token_lex(t_token *token)
 			append_redirection_word(token, &cur_lex, &list_tok, &list_lex);
 		token = token->next;
 	}
-	free_tokens(list_tok);
 	return (list_lex);
 }

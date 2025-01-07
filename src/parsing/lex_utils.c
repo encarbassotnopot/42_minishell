@@ -94,7 +94,7 @@ t_lex	*make_new_lex(t_lex *lex, int *cmd_num)
  */
 int	checker_lex(t_lex *lex)
 {
-	t_lex *tmp_lex;
+	t_lex	*tmp_lex;
 
 	tmp_lex = lex;
 	while (tmp_lex)

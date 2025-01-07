@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/02 16:07:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:21:58 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,136 +14,93 @@
 #include "execution.h"
 #include "minishell.h"
 #include "parsing.h"
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
-#define YELLOW "\x1b[33m"
-#define BLUE "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN "\x1b[36m"
-#define RESET "\x1b[0m"
 
-void	print_operator(t_operator_type e)
+/**
+ * Returns 1 if the given command is empty, 0 otherwise.
+ */
+int	check_empty_cmd(t_command *command)
 {
-	if (e == OP_UNSET)
-		printf("type: OP_UNSET\n");
-	if (e == LESS)
-		printf("type: LESS <\n");
-	if (e == GREAT)
-		printf("type: GREAT >\n");
-	if (e == DLESS)
-		printf("type: DLESS <<\n");
-	if (e == DGREAT)
-		printf("type: DGREAT >>\n");
-	if (e == PIPE)
-		printf("type: PIPE |\n");
+	if (command->arguments && command->arguments[0])
+		return (0);
+	if (command->file && command->file[0])
+		return (0);
+	return (1);
 }
 
-void	print_operator_line(t_operator_type e)
+/**
+ * Parses a line into a command list. Returns NULL on error.
+ */
+t_command	*parse_line(t_shell *shinfo, char *line)
 {
-	if (e == LESS)
-		printf("<");
-	if (e == GREAT)
-		printf(">");
-	if (e == DLESS)
-		printf("<<");
-	if (e == DGREAT)
-		printf(">>");
-	if (e == PIPE)
-		printf("|");
-}
+	t_token		*tokens;
+	t_lex		*lex;
+	t_command	*cmd;
 
-void	print_type(t_token_type e)
-{
-	if (e == TYPE_UNSET)
-		printf("type: TYPE_UNSET\n");
-	if (e == WORD)
-		printf("type: WORD\n");
-	if (e == OPERATOR)
-		printf("type: OPERATOR\n");
-	if (e == QUOTE)
-		printf("type: QUOTE\n");
-	if (e == DQUOTE)
-		printf("type: DQUOTE\n");
-}
-
-void	tok_debug(t_token *t)
-{
-	while (t)
+	if (!line || ft_isspace_str(line))
 	{
-		print_type(t->type);
-		printf("chbuf: %s\n", t->char_buf);
-		print_operator(t->oper);
-		printf("terminated?: %i\n\n", t->terminated);
-		t = t->next;
+		free(line);
+		return (NULL);
 	}
+	add_history(line);
+	tokens = tokenization(line);
+	free(line);
+	expand_tokens(tokens, shinfo->env, shinfo);
+	lex = redefine_token_lex(tokens);
+	free_tokens(&tokens);
+	if (checker_lex(lex) == 1)
+	{
+		cmd = redefine_lex(lex);
+		if (check_empty_cmd(cmd))
+			free_comandes(&cmd);
+	}
+	else
+		cmd = NULL;
+	free_lex_list(&lex);
+	return (cmd);
 }
 
-void	tok_debug_line(t_token *t)
+/**
+ * Cleansup everityhing in the shinfo struct.
+ * Prints the given exit message and extits with the given status code.
+ */
+void	cleanup(t_shell *shinfo, char *msg, int status)
 {
-	printf("line: ");
-	while (t)
-	{
-		if (t->type == OPERATOR)
-		{
-			printf(RED);
-			print_operator_line(t->oper);
-		}
-		if (t->type == QUOTE)
-			printf(GREEN);
-		if (t->type == DQUOTE)
-			printf(BLUE);
-		if (t->type && t->char_buf)
-			printf("%s", t->char_buf);
-		printf(RESET);
-		if (t->terminated)
-			printf(" ");
-		t = t->next;
-	}
-	printf("\n\n");
+	free_comandes(&shinfo->command);
+	free_env(&shinfo->env);
+	free(shinfo->exit);
+	rl_clear_history();
+	ft_putstr_fd(msg, STDOUT_FILENO);
+	exit(status);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char			*line;
-	t_token			*tokens;
-	t_lex			*lex;
-	t_command		*command;
-	int				ex;
-	t_environment	*env;
+	char	*line;
+	t_shell	shinfo;
+	int		exit;
 
-	env = init_env(envp);
+	shinfo.command = NULL;
+	shinfo.exit = NULL;
+	shinfo.env = init_env(envp);
+	exit = 0;
 	init_signals();
 	while (1312)
 	{
+		free(shinfo.exit);
+		shinfo.exit = ft_itoa(exit);
 		line = readline("minishell $> ");
-		if (line && !ft_isspace_str(line))
-		{
-			add_history(line);
-			tokens = tokenization(line);
-			free(line);
-			expand_tokens(tokens, env);
-			lex = redefine_token_lex(tokens);
-			if (checker_lex(lex) == 1)
-			{
-				command = redefine_lex(lex);
-				if (command && ((command->arguments && command->arguments[0])
-						|| (command->file && command->file[0])))
-					ex = run_commands(command, env);
-				free_comandes(command);
-				signal(SIGQUIT, SIG_IGN);
-			}
-		}
+		if (!line)
+			cleanup(&shinfo, "exit\n", 0);
+		shinfo.command = parse_line(&shinfo, line);
+		if (!shinfo.command)
+			continue ;
+		exit = run_commands(shinfo.command, shinfo.env, &shinfo);
+		if (WIFEXITED(exit))
+			exit = WEXITSTATUS(exit);
 		else
-		{
-			free(line);
-			if (line == NULL)
-			{
-				printf("exit\n");
-				rl_clear_history();
-				exit(0);
-			}
-		}
+			exit = -161;
+		free_comandes(&shinfo.command);
+		signal(SIGQUIT, SIG_IGN);
 	}
-	rl_clear_history();
-	exit(0);
+	cleanup(&shinfo, NULL, 0);
 }

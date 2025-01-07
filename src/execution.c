@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/02 16:17:49 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:02:22 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 #include "execution.h"
 #include "here_doc.h"
 
-char	*get_exe(char *path, char *name)
+char	*get_exe(const char *path, char *name)
 {
 	char	**paths;
 	char	*file;
 	int		i;
 
 	i = -1;
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
 	if (!paths)
 		pexit("split");
@@ -76,6 +78,32 @@ int	setup_redirs(t_command *command)
 }
 
 /**
+ * Gets the command's executable's full path.
+ * If it is not found, prints error to stderr and sets the return value to -1.
+ */
+char	*get_fp(t_command *command, t_environment *env, int *ret)
+{
+	char	*fp;
+
+	if (!command->arguments[0])
+		return (NULL);
+	if (!ft_strchr(command->arguments[0], '/'))
+	{
+		fp = get_exe(get_const_env_value(env, "PATH"), command->arguments[0]);
+		if (!fp)
+		{
+			ft_putstr_fd("Command not found: ", STDERR_FILENO);
+			ft_putstr_fd(command->arguments[0], STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+			*ret = -1;
+		}
+	}
+	else
+		fp = command->arguments[0];
+	return (fp);
+}
+
+/**
  * Runs the given command.
  * This function should only be called by the child resulting from a fork.
  *
@@ -84,7 +112,7 @@ int	setup_redirs(t_command *command)
  * and thus be made up only of redirections.
  * In this case, we will set up all the redirections, but we won't call execve.
  */
-void	run_command(t_command *command, t_environment *env)
+void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	char	*fp;
 	int		ret;
@@ -100,26 +128,23 @@ void	run_command(t_command *command, t_environment *env)
 		pexit("dup2 stdin");
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
-	if (ft_strcmp(command->arguments[0], "cd") == 0)
-		run_cd(command, env);
-	else if (command->arguments[0] && !ft_strchr(command->arguments[0], '/'))
-		fp = get_exe(get_env_value(env, "PATH"), command->arguments[0]);
-	else
-		fp = command->arguments[0];
+	// TODO: executar correctament builtins dins i fora de fork segons sigui pertinent
+	// if (ft_strcmp(command->arguments[0], "cd") == 0)
+	// 	run_cd(command, env);
+	fp = get_fp(command, env, &ret);
 	if (fp)
 		if (execve(fp, command->arguments, envp))
 			ret = -1;
-	close(command->fds[P_READ]);
-	close(command->fds[P_WRITE]);
+	cmd_fd_close(command);
 	free_strarr(envp);
-	exit(ret);
+	cleanup(shinfo, NULL, ret);
 }
 
 /**
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_commands(t_command *command, t_environment *env)
+int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	my_pipe[2];
 	int	exit;
@@ -134,7 +159,7 @@ int	run_commands(t_command *command, t_environment *env)
 		if (command->pid == -1)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
-			run_command(command, env);
+			run_command(command, env, shinfo);
 		cmd_fd_close(command);
 		command = command->next;
 	}
@@ -142,7 +167,7 @@ int	run_commands(t_command *command, t_environment *env)
 	if (command->pid == -1)
 		return (my_perror("pipe", -1));
 	else if (command->pid == 0)
-		run_command(command, env);
+		run_command(command, env, shinfo);
 	cmd_fd_close(command);
 	while (command)
 	{
