@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:25 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:57:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,15 @@ t_token	*tokenization(char *line)
 	tokens = append_token(NULL);
 	cur_tok = tokens;
 	quote_finished = 0;
+	while (ft_isspace(*line))
+		line++;
 	len = ft_strlen(line);
 	while (*line)
 	{
 		if (!cur_tok)
 			exit(1);
-		if ((cur_tok->type == QUOTE || cur_tok->type == DQUOTE) && !quote_finished)
+		if ((cur_tok->type == QUOTE || cur_tok->type == DQUOTE)
+			&& !quote_finished)
 			append_q_buf(&line, &cur_tok, &quote_finished);
 		else if (ft_strchr("<>|", *line))
 			expand_or_create_operator(*line, &cur_tok);

@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/07 14:00:01 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:49:15 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 			return (my_perror("fork", -2));
 		else if (command->pid == 0)
 			run_command(command, env, shinfo);
+		cmd_fd_close(shinfo->command);
 		command = command->next;
 	}
 	command->pid = fork();
@@ -168,6 +169,7 @@ int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 		return (my_perror("pipe", -1));
 	else if (command->pid == 0)
 		run_command(command, env, shinfo);
+	cmd_fd_close(shinfo->command);
 	while (command)
 	{
 		waitpid(command->pid, &exit, 0);

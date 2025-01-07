@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:53:06 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ static int	update_oldpwd(t_environment *env)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (printf("minishell : cd: getcwd failed\n"), 1);
-	if (!(oldpwd = get_env_value(env, "OLDPWD")))
+	oldpwd = get_const_env_value(env, "OLDPWD");
+	if (!oldpwd)
 		return (printf("minishell : cd: OLDPWD not set\n"), 1);
 	set_env_value(&env, "OLDPWD", pwd);
+	free(pwd);
 	return (0);
 }
 /*
- * 1. get oldpwd (if no exist ->print error), updated old path with actual path
+ * 1. get oldpwd (if no exist->print error), updated old path with actual path
  * 2. put oldpwd as actual.
  */
 static int	change_to_oldpwd(t_environment *env)
@@ -50,9 +52,6 @@ static int	change_to_oldpwd(t_environment *env)
 /*
  * 1. If directory NULL, set directory to the value of HOME,
  * but if cannot be found- print error.
- * 2. If directory is "-", go to the previous directory.
- * 3 If directory is not "-",
- * update the OLDPWD and change the directory to the new directory.
  */
 static int	cd(char *directory, t_environment *env)
 {
@@ -61,17 +60,12 @@ static int	cd(char *directory, t_environment *env)
 	if (!directory)
 	{
 		update_oldpwd(env);
-		directory = get_env_value(env, "HOME");
+		directory = get_const_env_value(env, "HOME");
 		if (!directory || directory[0] == '\0')
 			return (printf("minishell : cd: HOME not set\n"), 1);
 	}
-	if (ft_strcmp(directory, "-") == 0)
-		ret = change_to_oldpwd(env);
-	else
-	{
-		update_oldpwd(env);
-		ret = chdir(directory);
-	}
+	update_oldpwd(env);
+	ret = chdir(directory);
 	return (ret);
 }
 
