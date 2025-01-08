@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 11:59:48 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 13:03:02 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 17:15:09 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,26 @@ void	here_doc(t_command *command, char *stop)
 
 	here_clean(command);
 	here_signals();
+	interactive_signals();
 	line = readline("heredoc > ");
+	non_interactive_signals();
 	while (line && ft_strcmp(line, stop) != 0 && g_signal == 0)
 	{
 		here_append(command, line);
+		interactive_signals();
 		line = readline("heredoc > ");
+		non_interactive_signals();
+	}
+	if (!command->here_buf)
+	{
+		here_append(command, NULL);
 	}
 	free(line);
-	if (g_signal == SIGQUIT)
-	{
-		here_clean(command);
-		overwrite_fd(command, P_READ, -1);
-	}
 }
 
 /**
- * Writes a here_doc's content to a command's input.
- * Frees the here_doc when done.
+ * Writes a here_doc's content to a pipe,
+ * with an end created into the command's input.
  */
 void	here_feed(t_command *command)
 {
@@ -99,7 +102,7 @@ void	here_feed(t_command *command)
 	if (pipe(fds))
 		return ;
 	overwrite_fd(command, P_READ, fds[P_READ]);
-	while (buf)
+	while (buf && buf->line)
 	{
 		write(fds[P_WRITE], buf->line, ft_strlen(buf->line));
 		write(fds[P_WRITE], "\n", 1);
