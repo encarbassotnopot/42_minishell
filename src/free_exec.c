@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 12:20:08 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:52:40 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	free_comanda(t_command **comanda)
 		free_strarr(cmd->file);
 	if (cmd->here_buf)
 		here_clean(cmd);
+	if (cmd->fds[P_WRITE] != STDOUT_FILENO)
+		close(cmd->fds[P_WRITE]);
+	if (cmd->fds[P_READ] != STDIN_FILENO)
+		close(cmd->fds[P_READ]);
 	free(cmd);
 	*comanda = NULL;
 }

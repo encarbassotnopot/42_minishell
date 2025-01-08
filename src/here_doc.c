@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 11:59:48 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 12:39:08 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:03:02 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "here_doc.h"
 
 extern int	g_signal;
+
 /**
  * Empties and frees a command's here_buf.
  */

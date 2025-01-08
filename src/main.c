@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 12:53:52 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:52:40 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,19 @@ t_command	*parse_line(t_shell *shinfo, char *line)
  */
 void	cleanup(t_shell *shinfo, char *msg, int status)
 {
-	cmd_fd_close(shinfo->command);
 	free_comandes(&shinfo->command);
 	free_env(&shinfo->env);
 	free(shinfo->exit);
 	rl_clear_history();
 	ft_putstr_fd(msg, STDOUT_FILENO);
 	exit(status);
+}
+
+void	init_shinfo(t_shell *shinfo, char **envp)
+{
+	shinfo->command = NULL;
+	shinfo->exit = NULL;
+	shinfo->env = init_env(envp);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -82,9 +88,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	shinfo.command = NULL;
-	shinfo.exit = NULL;
-	shinfo.env = init_env(envp);
+	init_shinfo(&shinfo, envp);
 	exit = 0;
 	while (1312)
 	{
@@ -99,10 +103,6 @@ int	main(int argc, char **argv, char **envp)
 		if (!shinfo.command)
 			continue ;
 		exit = run_commands(shinfo.command, shinfo.env, &shinfo);
-		if (WIFEXITED(exit))
-			exit = WEXITSTATUS(exit);
-		else
-			exit = -161;
 		free_comandes(&shinfo.command);
 	}
 	cleanup(&shinfo, NULL, 0);

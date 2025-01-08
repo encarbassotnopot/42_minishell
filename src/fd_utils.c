@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:48:05 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 10:49:28 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:49:16 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,9 @@ int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 	int	ret;
 
 	ret = 0;
-	if (fd_type == P_WRITE)
-		ret = close(cmd->fds[P_WRITE]);
-	if (fd_type == P_READ)
-		ret = close(cmd->fds[P_READ]);
-	if (fd_type == P_READ)
-		cmd->fds[P_READ] = new_fd;
-	else if (fd_type == P_WRITE)
-		cmd->fds[P_WRITE] = new_fd;
+	if (cmd->fds[fd_type] != STDIN_FILENO || cmd->fds[fd_type] != STDOUT_FILENO)
+		ret = close(cmd->fds[fd_type]);
+	cmd->fds[fd_type] = new_fd;
 	return (ret);
 }
 
