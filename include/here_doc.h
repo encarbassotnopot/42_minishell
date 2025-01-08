@@ -15,7 +15,6 @@
 # include "minishell.h"
 
 void	here_doc(t_command *command, char *stop);
-void	here_clean(t_command *command);
 void	here_feed(t_command *command);
 
 #endif

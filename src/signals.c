@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 08:38:54 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/03 16:11:39 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:56:40 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_signals(void)
-{
-	signal(SIGINT, run_signint);
-	signal(SIGQUIT, SIG_IGN);
-}
+int		g_signal;
 
 void	run_signint(int sig)
 {
@@ -25,15 +21,22 @@ void	run_signint(int sig)
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	set_heresign(int sig)
+{
+	g_signal = sig;
+}
+
+void	init_signals(void)
+{
+	signal(SIGINT, run_signint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	run_sigquit(int sig)
+void	here_signals(void)
 {
-	signal(SIGQUIT, SIG_IGN);
-	printf("Quit (core dumped)\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	(void)sig;
+	g_signal = 0;
+	signal(SIGINT, set_heresign);
+	signal(SIGQUIT, set_heresign);
 }

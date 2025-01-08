@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 10:02:58 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:18:39 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,13 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 
 	ret = 0;
 	if (setup_redirs(command) == -1)
-		pexit("redir");
+		cleanup(shinfo, "redir", -1);
 	if (command->here_buf)
 		here_feed(command);
 	if (dup2(command->fds[P_READ], STDIN_FILENO) == -1)
-		pexit("dup2 stdin");
+		cleanup(shinfo, "dup2 stdin", -1);
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
-		pexit("dup2 stdout");
+		cleanup(shinfo, "dup2 stdout", -1);
 	if (is_builtin(command))
 		ret = run_builtin(shinfo);
 	else

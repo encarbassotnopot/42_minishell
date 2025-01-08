@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/04 16:35:52 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:39:41 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ void		free_comanda(t_command **cmd);
 void		free_comandes(t_command **command);
 void		free_tokens(t_token **tokens);
 int			checker_lex(t_lex *lex);
+
+void		here_clean(t_command *command);
 
 #endif

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 11:59:48 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 15:55:38 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:39:08 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "here_doc.h"
 
+extern int	g_signal;
 /**
  * Empties and frees a command's here_buf.
  */
@@ -67,13 +68,19 @@ void	here_doc(t_command *command, char *stop)
 	char	*line;
 
 	here_clean(command);
+	here_signals();
 	line = readline("heredoc > ");
-	while (line && ft_strcmp(line, stop) != 0)
+	while (line && ft_strcmp(line, stop) != 0 && g_signal == 0)
 	{
 		here_append(command, line);
 		line = readline("heredoc > ");
 	}
 	free(line);
+	if (g_signal == SIGQUIT)
+	{
+		here_clean(command);
+		overwrite_fd(command, P_READ, -1);
+	}
 }
 
 /**
@@ -85,6 +92,8 @@ void	here_feed(t_command *command)
 	t_here_buf	*buf;
 	int			fds[2];
 
+	if (command->fds[P_READ] < 0)
+		return ;
 	buf = command->here_buf;
 	if (pipe(fds))
 		return ;
