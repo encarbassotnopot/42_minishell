@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 12:19:50 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:55:31 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,9 @@ bool	is_raw_builtin(t_command *command);
 bool	is_builtin(t_command *command);
 int		run_builtin(t_shell *shinfo);
 void	here_clean(t_command *command);
+
+// exec_utils
+char	*get_exe(const char *path, char *name);
+char	*get_fp(t_command *command, t_environment *env, int *ret);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:19:09 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 13:13:42 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:01:01 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ t_command		*redefine_lex(t_lex *list_lex);
 void			command_debug(t_command *command);
 
 // comandes_utils
+int				get_arg_size(t_lex *lex);
+int				get_redir_size(t_lex *lex);
+t_command		*make_new_command(t_command *com, int arg_size, int redir_size);
+void			add_word(t_lex *lex, t_command *cur_com);
+void			add_redirection(t_lex *lex, t_command *cur_com);
+
+// frees
 void			free_lex_list(t_lex **list_lex);
 void			free_lex_node(t_lex **node);
 void			free_comanda(t_command **cmd);
