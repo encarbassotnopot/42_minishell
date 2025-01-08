@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:48:05 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2024/12/28 15:53:33 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 10:49:28 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 	int	ret;
 
 	ret = 0;
-	if (new_fd < 0)
-		return (-1);
-	if (fd_type == P_WRITE && cmd->fds[P_WRITE] != STDOUT_FILENO)
+	if (fd_type == P_WRITE && cmd->fds[P_WRITE])
 		ret = close(cmd->fds[P_WRITE]);
-	if (fd_type == P_READ && cmd->fds[P_READ] != STDIN_FILENO)
+	if (fd_type == P_READ && cmd->fds[P_READ])
 		ret = close(cmd->fds[P_READ]);
 	if (fd_type == P_READ)
 		cmd->fds[P_READ] = new_fd;
