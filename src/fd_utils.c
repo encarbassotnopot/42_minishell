@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 10:48:05 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 16:31:22 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:37:09 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 	int	ret;
 
 	ret = 0;
-	if (fd_type == P_WRITE && cmd->fds[P_WRITE] != STDOUT_FILENO)
+	if (fd_type == P_WRITE && cmd->fds[P_WRITE] != STDOUT_FILENO
+		&& cmd->fds[P_WRITE] > 0)
 		ret = close(cmd->fds[P_WRITE]);
-	else if (fd_type == P_READ)
-		ret = close(cmd->fds[P_READ] && cmd->fds[P_READ] != STDIN_FILENO);
+	else if (fd_type == P_READ && cmd->fds[P_READ] != STDIN_FILENO
+		&& cmd->fds[P_READ] > 0)
+		ret = close(cmd->fds[P_READ]);
 	if (fd_type == P_READ)
 		cmd->fds[P_READ] = new_fd;
 	else if (fd_type == P_WRITE)
@@ -93,9 +95,9 @@ void	cmd_fd_close(t_command *command)
 {
 	if (command)
 	{
-		if (command->fds[P_WRITE] != STDOUT_FILENO)
+		if (command->fds[P_WRITE] != STDOUT_FILENO && command->fds[P_WRITE] > 0)
 			close(command->fds[P_WRITE]);
-		if (command->fds[P_READ] != STDIN_FILENO)
+		if (command->fds[P_READ] != STDIN_FILENO && command->fds[P_READ] > 0)
 			close(command->fds[P_READ]);
 	}
 }

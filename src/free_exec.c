@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:41:29 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 15:52:40 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:37:52 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	free_comanda(t_command **comanda)
 		free_strarr(cmd->file);
 	if (cmd->here_buf)
 		here_clean(cmd);
-	if (cmd->fds[P_WRITE] != STDOUT_FILENO)
+	if (cmd->fds[P_WRITE] != STDOUT_FILENO && cmd->fds[P_WRITE] > 0)
 		close(cmd->fds[P_WRITE]);
-	if (cmd->fds[P_READ] != STDIN_FILENO)
+	if (cmd->fds[P_READ] != STDIN_FILENO && cmd->fds[P_READ] > 0)
 		close(cmd->fds[P_READ]);
 	free(cmd);
 	*comanda = NULL;
