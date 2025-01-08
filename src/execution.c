@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 15:52:37 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:01:45 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,18 +120,13 @@ void	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	exit;
-	int	i;
 
-	i = -1;
 	if (command->next || !is_raw_builtin(command))
 		run_pipeline(command, env, shinfo);
 	else
 		return (run_builtin(shinfo));
 	while (command)
 	{
-		printf("#%d waiting %s %d\n", ++i, command->arguments[0], command->pid);
-		printf("#%d fd in: %d fd out: %d\n", i, command->fds[P_READ],
-			command->fds[P_WRITE]);
 		waitpid(command->pid, &exit, 0);
 		command = command->next;
 	}
