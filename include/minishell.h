@@ -6,7 +6,7 @@
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 10:46:38 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:53:05 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # define P_WRITE 1
 
 void		cleanup(t_shell *shinfo, char *msg, int status);
-void		init_signals(void);
+void    	interactive_signals(void);
+void	    non_interactive_signals(void);
 void		here_signals(void);
 void		free_strarr(char **str);
 

@@ -6,7 +6,7 @@
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 08:38:54 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 11:56:40 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:54:49 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,28 @@ void	run_signint(int sig)
 	rl_redisplay();
 }
 
+void	display_new_line(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+}
+
 void	set_heresign(int sig)
 {
 	g_signal = sig;
 }
 
-void	init_signals(void)
+void	interactive_signals(void)
 {
 	signal(SIGINT, run_signint);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	non_interactive_signals(void)
+{
+	signal(SIGINT, display_new_line);
+	signal(SIGQUIT, display_new_line);
 }
 
 void	here_signals(void)

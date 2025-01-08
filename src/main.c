@@ -6,7 +6,7 @@
 /*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 10:46:59 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:53:52 by smercado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,15 @@ int	main(int argc, char **argv, char **envp)
 	shinfo.exit = NULL;
 	shinfo.env = init_env(envp);
 	exit = 0;
-	init_signals();
 	while (1312)
 	{
+		interactive_signals();
 		free(shinfo.exit);
 		shinfo.exit = ft_itoa(exit);
 		line = readline("minishell $> ");
 		if (!line)
 			cleanup(&shinfo, "exit\n", 0);
+		non_interactive_signals();
 		shinfo.command = parse_line(&shinfo, line);
 		if (!shinfo.command)
 			continue ;
