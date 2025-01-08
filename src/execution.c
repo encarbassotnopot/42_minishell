@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 12:18:39 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:47:51 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 	if (command->here_buf)
 		here_feed(command);
 	if (dup2(command->fds[P_READ], STDIN_FILENO) == -1)
-		cleanup(shinfo, "dup2 stdin", -1);
+		cleanup(shinfo, strerror(errno), -1);
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
-		cleanup(shinfo, "dup2 stdout", -1);
+		cleanup(shinfo, strerror(errno), -1);
 	if (is_builtin(command))
 		ret = run_builtin(shinfo);
 	else
@@ -146,20 +146,19 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
  * Runs a list of commands (pipeline).
  * Returns the exit status of the last command.
  */
-int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
+void	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 {
 	int	my_pipe[2];
-	int	exit;
 
 	while (command->next)
 	{
 		if (pipe(my_pipe) == -1)
-			return (my_perror("pipe", -1));
+			cleanup(shinfo, "pipe", -1);
 		command->fds[P_WRITE] = my_pipe[P_WRITE];
 		command->next->fds[P_READ] = my_pipe[P_READ];
 		command->pid = fork();
 		if (command->pid == -1)
-			return (my_perror("fork", -2));
+			cleanup(shinfo, "fork", -1);
 		else if (command->pid == 0)
 			run_command(command, env, shinfo);
 		cmd_fd_close(shinfo->command);
@@ -167,22 +166,29 @@ int	run_pipeline(t_command *command, t_environment *env, t_shell *shinfo)
 	}
 	command->pid = fork();
 	if (command->pid == -1)
-		return (my_perror("pipe", -1));
+		cleanup(shinfo, "pipe", -1);
 	else if (command->pid == 0)
 		run_command(command, env, shinfo);
 	cmd_fd_close(shinfo->command);
-	while (command)
-	{
-		waitpid(command->pid, &exit, 0);
-		command = command->next;
-	}
-	return (exit);
 }
 
 int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 {
+	int	exit;
+	int	i;
+
+	i = -1;
 	if (command->next || !is_raw_builtin(command))
-		return (run_pipeline(command, env, shinfo));
+		run_pipeline(command, env, shinfo);
 	else
 		return (run_builtin(shinfo));
+	while (command)
+	{
+		printf("#%d waiting %s %d\n", ++i, command->arguments[0], command->pid);
+		printf("#%d fd in: %d fd out: %d\n", i, command->fds[P_READ],
+			command->fds[P_WRITE]);
+		waitpid(command->pid, &exit, 0);
+		command = command->next;
+	}
+	return (exit);
 }

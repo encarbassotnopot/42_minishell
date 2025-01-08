@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 08:38:54 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 12:54:49 by smercado         ###   ########.fr       */
+/*   Created: 2025/01/08 13:00:49 by ecoma-ba          #+#    #+#             */
+/*   Updated: 2025/01/08 13:06:21 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_signal;
+extern int	g_signal;
 
 void	run_signint(int sig)
 {
@@ -33,23 +33,4 @@ void	display_new_line(int sig)
 void	set_heresign(int sig)
 {
 	g_signal = sig;
-}
-
-void	interactive_signals(void)
-{
-	signal(SIGINT, run_signint);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	non_interactive_signals(void)
-{
-	signal(SIGINT, display_new_line);
-	signal(SIGQUIT, display_new_line);
-}
-
-void	here_signals(void)
-{
-	g_signal = 0;
-	signal(SIGINT, set_heresign);
-	signal(SIGQUIT, set_heresign);
 }

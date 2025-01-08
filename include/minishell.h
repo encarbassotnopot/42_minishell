@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:16:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 12:53:05 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:59:54 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 # define P_READ 0
 # define P_WRITE 1
 
-void		cleanup(t_shell *shinfo, char *msg, int status);
-void    	interactive_signals(void);
-void	    non_interactive_signals(void);
-void		here_signals(void);
-void		free_strarr(char **str);
+void	cleanup(t_shell *shinfo, char *msg, int status);
+void	interactive_signals(void);
+void	non_interactive_signals(void);
+void	here_signals(void);
+void	free_strarr(char **str);
 
 #endif

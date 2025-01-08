@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 11:14:47 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 11:28:29 by smercado         ###   ########.fr       */
+/*   Created: 2025/01/08 13:01:13 by ecoma-ba          #+#    #+#             */
+/*   Updated: 2025/01/08 13:02:01 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#ifndef SIGNALS_H
+# define SIGNALS_H
+# include "minishell.h"
 
-int	count_args(t_command *command)
-{
-	int	arg_count;
-
-	arg_count = 0;
-	while (command->arguments[arg_count])
-		arg_count++;
-	return (arg_count);
-}
+void	run_signint(int sig);
+void	display_new_line(int sig);
+void	set_heresign(int sig);
+#endif
