@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:12:52 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 13:54:11 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:52:40 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_command	*parse_line(t_shell *shinfo, char *line)
  */
 void	cleanup(t_shell *shinfo, char *msg, int status)
 {
-	cmd_fd_close(shinfo->command);
 	free_comandes(&shinfo->command);
 	free_env(&shinfo->env);
 	free(shinfo->exit);
