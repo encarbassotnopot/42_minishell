@@ -75,9 +75,9 @@ int	overwrite_fd(t_command *cmd, int fd_type, int new_fd)
 	int	ret;
 
 	ret = 0;
-	if (fd_type == P_WRITE && cmd->fds[P_WRITE])
+	if (fd_type == P_WRITE)
 		ret = close(cmd->fds[P_WRITE]);
-	if (fd_type == P_READ && cmd->fds[P_READ])
+	if (fd_type == P_READ)
 		ret = close(cmd->fds[P_READ]);
 	if (fd_type == P_READ)
 		cmd->fds[P_READ] = new_fd;
