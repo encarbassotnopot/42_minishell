@@ -6,13 +6,13 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:07:51 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/07 14:16:13 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 10:00:17 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
 
-int	run_export(t_command *command, t_environment *env, t_shell *shinfo)
+int	run_export(t_shell *sh)
 {
 	int		arg_count;
 	int		i;
@@ -21,18 +21,18 @@ int	run_export(t_command *command, t_environment *env, t_shell *shinfo)
 	char	*value;
 
 	i = 1;
-	arg_count = count_args(command);
+	arg_count = count_args(sh->command);
 	if (arg_count == 1)
-		return (run_env(command, env, shinfo));
+		return (run_env(sh));
 	while (arg_count > i)
 	{
-		equal = ft_strchr(command->arguments[i], '=');
+		equal = ft_strchr(sh->command->arguments[i], '=');
 		if (equal)
 		{
-			name_var = ft_substr(command->arguments[i], 0, equal
-					- command->arguments[i]);
+			name_var = ft_substr(sh->command->arguments[i], 0, equal
+					- sh->command->arguments[i]);
 			value = ft_strdup(equal + 1);
-			set_env_value(&env, name_var, value);
+			set_env_value(&sh->env, name_var, value);
 			free(name_var);
 			free(value);
 		}
@@ -41,13 +41,11 @@ int	run_export(t_command *command, t_environment *env, t_shell *shinfo)
 	return (0);
 }
 
-int	run_pwd(t_command *command, t_environment *env, t_shell *shinfo)
+int	run_pwd(t_shell *sh)
 {
 	char	*buf;
 
-	(void)env;
-	(void)command;
-	(void)shinfo;
+	(void)sh;
 	buf = getcwd(NULL, 0);
 	if (!buf)
 		return (printf("minishell: pwd: %s\n", strerror(errno)), -1);

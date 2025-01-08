@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/07 14:49:15 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 10:02:58 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*get_fp(t_command *command, t_environment *env, int *ret)
 		}
 	}
 	else
-		fp = command->arguments[0];
+		fp = ft_strdup(command->arguments[0]);
 	return (fp);
 }
 
@@ -128,7 +128,7 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		pexit("dup2 stdout");
 	if (is_builtin(command))
-		ret = run_builtin(command, env, shinfo);
+		ret = run_builtin(shinfo);
 	else
 	{
 		envp = gen_env(env);
@@ -136,6 +136,7 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 		if (fp)
 			if (execve(fp, command->arguments, envp))
 				ret = -1;
+		free(fp);
 		free_strarr(envp);
 	}
 	cleanup(shinfo, NULL, ret);
@@ -183,5 +184,5 @@ int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 	if (command->next || !is_raw_builtin(command))
 		return (run_pipeline(command, env, shinfo));
 	else
-		return (run_builtin(command, env, shinfo));
+		return (run_builtin(shinfo));
 }

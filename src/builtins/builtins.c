@@ -6,7 +6,7 @@
 /*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 10:22:34 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/07 15:02:59 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/08 10:04:00 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	is_builtin(t_command *command)
 /**
  * Checks if the given command is a builtin.
  */
-int (*get_builtin(t_command *command))(t_command *, t_environment *, t_shell *)
+int (*get_builtin(t_command *command))(t_shell *)
 {
 	char	*name;
 
@@ -87,10 +87,10 @@ int (*get_builtin(t_command *command))(t_command *, t_environment *, t_shell *)
 	return (NULL);
 }
 
-int	run_builtin(t_command *command, t_environment *env, t_shell *shinfo)
+int	run_builtin(t_shell *shinfo)
 {
-	int (*builtin)(t_command *, t_environment *, t_shell *);
+	int	(*builtin)(t_shell *);
 
-	builtin = get_builtin(command);
-	return (*builtin)(command, env, shinfo);
+	builtin = get_builtin(shinfo->command);
+	return (*builtin)(shinfo);
 }
