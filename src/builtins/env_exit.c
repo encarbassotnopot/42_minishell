@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smercado <smercado@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 15:37:26 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 18:04:56 by smercado         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:07:09 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static int	is_numeric(const char *str)
 /**
  * Prints the whole environment.
  */
-int	run_env(t_shell *sh)
+int	run_env(t_shell *sh, t_command *command)
 {
 	t_environment	*env;
 
+	(void)command;
 	env = sh->env;
 	while (env)
 	{
@@ -47,11 +48,11 @@ int	run_env(t_shell *sh)
 /**
  * Exits the shell (or the child process).
  */
-int	run_exit(t_shell *sh)
+int	run_exit(t_shell *sh, t_command *command)
 {
 	int	arg_count;
 
-	arg_count = count_args(sh->command);
+	arg_count = count_args(command);
 	if (arg_count > 2)
 	{
 		printf("minishell: exit: too many arguments\n");
@@ -60,14 +61,13 @@ int	run_exit(t_shell *sh)
 	if (arg_count == 1)
 	{
 		cleanup(sh, NULL, 0);
-		return (EXIT_SUCCESS);
 	}
-	if (!is_numeric(sh->command->arguments[1]))
+	if (!is_numeric(command->arguments[1]))
 	{
 		printf("minishell: exit: %s: numeric argument required\n",
-			sh->command->arguments[1]);
+			command->arguments[1]);
 		cleanup(sh, NULL, EXIT_FAILURE);
 	}
-	cleanup(sh, NULL, ft_atoi(sh->command->arguments[1]));
+	cleanup(sh, NULL, ft_atoi(command->arguments[1]));
 	return (0);
 }

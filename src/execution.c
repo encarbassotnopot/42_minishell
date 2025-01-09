@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:51:33 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 16:01:45 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:11:19 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	run_command(t_command *command, t_environment *env, t_shell *shinfo)
 	if (dup2(command->fds[P_WRITE], STDOUT_FILENO) == -1)
 		cleanup(shinfo, strerror(errno), -1);
 	if (is_builtin(command))
-		ret = run_builtin(shinfo);
+		ret = run_builtin(shinfo, command);
 	else
 	{
 		envp = gen_env(env);
@@ -124,7 +124,7 @@ int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 	if (command->next || !is_raw_builtin(command))
 		run_pipeline(command, env, shinfo);
 	else
-		return (run_builtin(shinfo));
+		return (run_builtin(shinfo, command));
 	while (command)
 	{
 		waitpid(command->pid, &exit, 0);
@@ -133,6 +133,6 @@ int	run_commands(t_command *command, t_environment *env, t_shell *shinfo)
 	if (WIFEXITED(exit))
 		exit = WEXITSTATUS(exit);
 	else
-		exit = -161;
+		exit = EXIT_FAILURE;
 	return (exit);
 }

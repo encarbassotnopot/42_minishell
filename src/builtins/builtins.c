@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 10:22:34 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 16:38:22 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:05:52 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	is_builtin(t_command *command)
 /**
  * Checks if the given command is a builtin.
  */
-int	(*get_builtin(t_command *command))(t_shell *sh)
+int (*get_builtin(t_command *command))(t_shell *sh, t_command *command)
 {
 	char	*name;
 
@@ -88,13 +88,13 @@ int	(*get_builtin(t_command *command))(t_shell *sh)
 	return (NULL);
 }
 
-int	run_builtin(t_shell *shinfo)
+int	run_builtin(t_shell *shinfo, t_command *command)
 {
-	int	(*builtin)(t_shell *);
+	int	(*builtin)(t_shell *, t_command *);
 
-	builtin = get_builtin(shinfo->command);
+	builtin = get_builtin(command);
 	if (builtin)
-		return ((*builtin)(shinfo));
+		return ((*builtin)(shinfo, command));
 	else
 		return (0);
 }

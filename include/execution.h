@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 08:52:37 by ecoma-ba          #+#    #+#             */
-/*   Updated: 2025/01/08 13:55:31 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:06:03 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		overwrite_fd(t_command *cmd, int fd_type, int new_fd);
 void	cmd_fd_close(t_command *command);
 bool	is_raw_builtin(t_command *command);
 bool	is_builtin(t_command *command);
-int		run_builtin(t_shell *shinfo);
+int		run_builtin(t_shell *shinfo, t_command *command);
 void	here_clean(t_command *command);
 
 // exec_utils

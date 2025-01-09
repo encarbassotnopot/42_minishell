@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecoma-ba <ecoma-ba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecoma-ba <ecoma-ba@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 10:31:57 by smercado          #+#    #+#             */
-/*   Updated: 2025/01/08 10:04:22 by ecoma-ba         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:04:13 by ecoma-ba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,20 @@ static int	cd(char *directory, t_environment *env)
  * 1. if cd has more than 1 arguments, return error.
  * 2. run cd and print ret if is an error type (errno)
  */
-int	run_cd(t_shell *sh)
+int	run_cd(t_shell *sh, t_command *command)
 {
 	int	ret;
 	int	arg_count;
 
-	arg_count = count_args(sh->command);
+	arg_count = count_args(command);
 	if (arg_count > 2)
 		return (printf("minishell : cd: too many arguments\n"), 1);
 	else
-		ret = cd(sh->command->arguments[1], sh->env);
+		ret = cd(command->arguments[1], sh->env);
 	if (ret == -1)
 	{
 		printf("minishell: cd: %s: %s\n", strerror(errno),
-			sh->command->arguments[1]);
+			command->arguments[1]);
 		return (-1);
 	}
 	return (0);
